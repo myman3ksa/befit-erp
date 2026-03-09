@@ -7,19 +7,17 @@
 }
 
 :root {
-    --bg-dark: #0B0E14;
-    /* Deep Navy Space */
-    --bg-panel: #141822;
-    --bg-card: #1C212E;
+    --bg-dark: #000000;
+    --bg-panel: #0A0A0A;
+    --bg-card: #141414;
 
-    --primary: #FCA311;
-    /* Gold / Orange Accent */
-    --primary-hover: #E58E00;
+    --primary: #FFFFFF;
+    --primary-hover: #E0E0E0;
 
     --text-main: #FFFFFF;
-    --text-muted: #8A96AC;
+    --text-muted: #888888;
 
-    --border-color: #2A3042;
+    --border-color: #222222;
 
     --success: #2ECC71;
     --warning: #F1C40F;
@@ -171,8 +169,7 @@ td {
 }
 
 .nav-links li.active {
-    background-color: rgba(252, 163, 17, 0.08);
-    /* Primary color low opacity */
+    background-color: rgba(255, 255, 255, 0.05);
     color: var(--primary);
     border-left-color: var(--primary);
 }
@@ -207,8 +204,8 @@ td {
     flex-direction: column;
     overflow-y: auto;
     background-image:
-        radial-gradient(circle at top right, rgba(252, 163, 17, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at bottom left, rgba(52, 152, 219, 0.03) 0%, transparent 50%);
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+        radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
 }
 
 .top-header {
@@ -332,7 +329,7 @@ export-btn:hover {
 .primary-btn:hover {
     background-color: var(--primary-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(252, 163, 17, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
 }
 
 .secondary-btn {
@@ -365,7 +362,7 @@ export-btn:hover {
 }
 
 .outline-btn:hover {
-    background: rgba(252, 163, 17, 0.1);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 /* Pages Container */
@@ -467,7 +464,7 @@ export-btn:hover {
 }
 
 .kpi-icon.inv {
-    background: rgba(252, 163, 17, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--primary);
 }
 
@@ -850,5 +847,252 @@ export-btn:hover {
 
     .charts-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ===== AUTHENTICATION OVERLAY ===== */
+.auth-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.97);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
+}
+
+.auth-overlay.active {
+    display: flex;
+}
+
+.auth-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 40px;
+    width: 420px;
+    max-width: 95vw;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+    animation: fadeIn 0.4s ease;
+}
+
+.auth-box h2 {
+    font-size: 26px;
+    margin-bottom: 28px;
+    text-align: center;
+    color: var(--text-main);
+    letter-spacing: 1px;
+}
+
+.auth-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.auth-links span {
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.auth-links span:hover {
+    color: var(--text-main);
+    text-decoration: underline;
+}
+
+/* ===== RTL ARABIC SUPPORT ===== */
+body.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+body.rtl .sidebar {
+    border-right: none;
+    border-left: 1px solid var(--border-color);
+}
+
+body.rtl .nav-links li {
+    border-left: none;
+    border-right: 3px solid transparent;
+}
+
+body.rtl .nav-links li.active {
+    border-right-color: var(--primary);
+}
+
+body.rtl .logo {
+    flex-direction: row-reverse;
+}
+
+body.rtl .kpi-card {
+    flex-direction: row-reverse;
+}
+
+body.rtl .section-header {
+    flex-direction: row-reverse;
+}
+
+body.rtl .header-actions {
+    flex-direction: row-reverse;
+}
+
+body.rtl .styled-table th,
+body.rtl .styled-table td {
+    text-align: right;
+}
+
+/* ===== MOBILE HAMBURGER ===== */
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-main);
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+/* ===== DEVICE RESPONSIVE ===== */
+
+/* Tablets (768px - 1024px) */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .pages-container {
+        padding: 20px;
+    }
+
+    .top-header {
+        padding: 0 20px;
+    }
+
+    .search-bar {
+        width: 220px;
+    }
+}
+
+/* Mobile / Phone (< 768px) */
+@media (max-width: 768px) {
+    body.dark-theme {
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    .hamburger-btn {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        height: 100vh;
+        z-index: 500;
+        transition: left 0.3s ease;
+        width: 260px;
+    }
+
+    body.rtl .sidebar {
+        left: auto;
+        right: -260px;
+        transition: right 0.3s ease;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    body.rtl .sidebar.open {
+        left: auto;
+        right: 0;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .top-header {
+        padding: 0 16px;
+        height: 64px;
+    }
+
+    .search-bar {
+        width: 160px;
+    }
+
+    .pages-container {
+        padding: 16px;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .kpi-card {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .kpi-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 22px;
+    }
+
+    .kpi-info p {
+        font-size: 18px;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .costing-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-box {
+        padding: 28px 20px;
+    }
+
+    .header-actions {
+        gap: 10px;
+    }
+}
+
+/* Small phones (< 480px) */
+@media (max-width: 480px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        width: 95vw;
+    }
+
+    .section-header h2 {
+        font-size: 20px;
+    }
+
+    .search-bar {
+        width: 120px;
     }
 }

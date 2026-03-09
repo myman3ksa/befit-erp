@@ -163,7 +163,7 @@ async function handleAuthSubmit() {
 
         } else if (authMode === 'forgot') {
             const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin
+                redirectTo: 'https://man-3.com'
             });
             if (error) throw error;
             showAuthSuccess('Password reset email sent! Please check your inbox.');

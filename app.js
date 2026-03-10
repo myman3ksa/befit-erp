@@ -7,6 +7,108 @@ const SUPABASE_KEY = 'sb_publishable_kDN7Xyf9FWwfQI5skcwR_w_jhR5eu9m';
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ============================================================
+// BLOCKCHAIN NETWORK ANIMATION (Login Screen)
+// ============================================================
+(function initBlockchainCanvas() {
+    const canvas = document.getElementById('auth-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let mouse = { x: -9999, y: -9999 };
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    const overlay = document.getElementById('auth-overlay');
+    if (overlay) {
+        overlay.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+    }
+
+    const NODE_COUNT = 80;
+    const MAX_DIST = 160;
+    const CURSOR_DIST = 200;
+
+    const nodes = Array.from({ length: NODE_COUNT }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        r: Math.random() * 2.5 + 1.5,
+        pulse: Math.random() * Math.PI * 2
+    }));
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x;
+                const dy = nodes[i].y - nodes[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < MAX_DIST) {
+                    const alpha = (1 - dist / MAX_DIST) * 0.35;
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.strokeStyle = 'rgba(0, 180, 255,' + alpha + ')';
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        for (let i = 0; i < nodes.length; i++) {
+            const dx = nodes[i].x - mouse.x;
+            const dy = nodes[i].y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < CURSOR_DIST) {
+                const alpha = (1 - dist / CURSOR_DIST) * 0.75;
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.strokeStyle = 'rgba(0, 255, 200,' + alpha + ')';
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+            }
+        }
+
+        for (const node of nodes) {
+            node.pulse += 0.04;
+            const glow = Math.abs(Math.sin(node.pulse));
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, node.r + glow, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,' + (160 + Math.floor(glow * 80)) + ',255,' + (0.6 + glow * 0.3) + ')';
+            ctx.shadowColor = '#00c8ff';
+            ctx.shadowBlur = 8 * glow;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            node.x += node.vx;
+            node.y += node.vy;
+            if (node.x < 0 || node.x > canvas.width)  node.vx *= -1;
+            if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+        }
+
+        if (mouse.x > -1000) {
+            const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 30);
+            grad.addColorStop(0, 'rgba(0, 255, 200, 0.4)');
+            grad.addColorStop(1, 'rgba(0, 255, 200, 0)');
+            ctx.beginPath();
+            ctx.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+// ============================================================
 // LANGUAGE TRANSLATIONS (English / Arabic)
 // ============================================================
 const translations = {

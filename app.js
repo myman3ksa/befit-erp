@@ -196,6 +196,71 @@ function handleLogout() {
 }
 
 // ============================================================
+// PRODUCTION & RECIPE LOGIC
+// ============================================================
+let productionLog = [];
+let recipes = [];
+
+function submitProduction() {
+    const item = document.getElementById('prod-menu-item').value;
+    const branch = document.getElementById('prod-branch').value;
+    const qty = parseFloat(document.getElementById('prod-qty').value);
+
+    if (!qty || qty <= 0) {
+        alert('Please enter a valid quantity.');
+        return;
+    }
+
+    const entry = {
+        date: new Date().toLocaleDateString('en-GB'),
+        item,
+        branch,
+        qty: `${qty} Portions`,
+        cost: (qty * 4.5).toFixed(2), // Mock cost calculation
+        wastage: '0 Portions'
+    };
+
+    productionLog.unshift(entry);
+    renderProductionTable();
+    closeModal('production-modal');
+}
+
+function renderProductionTable() {
+    const tbody = document.querySelector('#production-section .styled-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = productionLog.map(row => `
+        <tr>
+            <td>${row.date}</td>
+            <td>${row.item}</td>
+            <td>${row.branch}</td>
+            <td><strong>${row.qty}</strong></td>
+            <td>${row.cost}</td>
+            <td>${row.wastage}</td>
+        </tr>
+    `).join('') + tbody.innerHTML; // Prepend new entries
+}
+
+function submitRecipe() {
+    const name = document.getElementById('recipe-name').value.trim();
+    const category = document.getElementById('recipe-category').value;
+
+    if (!name) {
+        alert('Please enter a recipe name.');
+        return;
+    }
+
+    alert(`Recipe "${name}" created successfully!`);
+    closeModal('recipe-modal');
+}
+
+// =// ============================================================
+// SETTINGS LOGIC
+// ============================================================
+function toggleTheme() {
+    document.body.classList.toggle('dark-theme');
+}
+
+// ============================================================
 // WASTAGE LOGIC (deducts from inventory concept)
 // ============================================================
 let wastageLog = [];
@@ -230,6 +295,7 @@ function submitWastage() {
 
 function renderWastageTable() {
     const tbody = document.getElementById('wastage-table-body');
+    if (!tbody) return;
     tbody.innerHTML = wastageLog.map(row => `
         <tr>
             <td>${row.date}</td>
@@ -418,14 +484,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Export Functionality (Mock) ---
     const exportBtn = document.getElementById('global-export');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', () => {
-            const btnText = exportBtn.innerHTML;
-            exportBtn.innerHTML = "<i class='bx bx-loader bx-spin'></i> Exporting...";
-            setTimeout(() => {
-                exportBtn.innerHTML = "<i class='bx bx-check'></i> Exported";
-                setTimeout(() => { exportBtn.innerHTML = btnText; }, 2000);
-            }, 1500);
+    const exportPOBtn = document.getElementById('export-po-btn');
+
+    function simulateExport(btn) {
+        const btnText = btn.innerHTML;
+        btn.innerHTML = "<i class='bx bx-loader bx-spin'></i> Exporting...";
+        setTimeout(() => {
+            btn.innerHTML = "<i class='bx bx-check'></i> Exported";
+            setTimeout(() => { btn.innerHTML = btnText; }, 2000);
+        }, 1500);
+    }
+
+    if (exportBtn) exportBtn.addEventListener('click', () => simulateExport(exportBtn));
+    if (exportPOBtn) exportPOBtn.addEventListener('click', () => simulateExport(exportPOBtn));
+
+    // --- Dashboard Filter Logic ---
+    const timeFilter = document.getElementById('dashboard-time-filter');
+    const datePicker = document.getElementById('dashboard-date-picker');
+
+    if (timeFilter) {
+        timeFilter.addEventListener('change', () => {
+            renderCharts(); // Refresh charts based on filter
+            const badge = document.querySelector('.comp-badge');
+            if (timeFilter.value === 'daily') badge.innerHTML = "<i class='bx bx-trending-up'></i> +5% vs yesterday";
+            else if (timeFilter.value === 'weekly') badge.innerHTML = "<i class='bx bx-trending-up'></i> +12% vs last week";
+            else badge.innerHTML = "<i class='bx bx-trending-down'></i> -3% vs last month";
         });
     }
 
@@ -459,3 +542,7 @@ window.onclick = function (event) {
 window.toggleAuthMode = toggleAuthMode;
 window.handleAuthSubmit = handleAuthSubmit;
 window.submitWastage = submitWastage;
+window.submitProduction = submitProduction;
+window.submitRecipe = submitRecipe;
+window.toggleTheme = toggleTheme;
+window.applyLanguage = applyLanguage;

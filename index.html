@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant ERP System</title>
+    <title>MAN-3 Plus | Restaurant ERP</title>
     <meta name="description"
         content="A comprehensive Restaurant ERP System with modules for purchasing, inventory, production, and more.">
     <!-- Google Fonts -->
@@ -23,7 +23,7 @@
     <nav class="sidebar">
         <div class="logo">
             <i class='bx bx-restaurant'></i>
-            <span>BeFit ERP</span>
+            <span>MAN-3 Plus</span>
         </div>
         <div class="user-info">
             <div class="user-details" style="padding-left: 10px;">
@@ -91,9 +91,17 @@
                             <option value="jeddah">Jeddah Branch</option>
                             <option value="dammam">Dammam Cloud Kitchen</option>
                         </select>
-                        <input type="date" title="Start Date">
-                        <input type="date" title="End Date">
+                        <select title="Time Filter" id="dashboard-time-filter" class="dashboard-time-select">
+                            <option value="daily">Daily View</option>
+                            <option value="weekly">Weekly View</option>
+                            <option value="monthly">Monthly View</option>
+                        </select>
+                        <input type="date" title="Select Date" id="dashboard-date-picker">
                     </div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="comp-badge up"><i class='bx bx-trending-up'></i> +12% vs last week</div>
                 </div>
 
                 <div class="kpi-grid">
@@ -147,8 +155,11 @@
             <section id="purchasing-section" class="page-section">
                 <div class="section-header">
                     <h2>Purchasing Orders</h2>
-                    <button class="primary-btn" onclick="openModal('po-modal')"><i class='bx bx-plus'></i> New
+                    <div class="header-buttons">
+                        <button class="secondary-btn" id="export-po-btn"><i class='bx bx-export'></i> Export P.O.</button>
+                        <button class="primary-btn" onclick="openModal('po-modal')"><i class='bx bx-plus'></i> New
                         PO</button>
+                    </div>
                 </div>
 
                 <div class="kpi-grid">
@@ -349,7 +360,7 @@
             <section id="production-section" class="page-section">
                 <div class="section-header">
                     <h2>Daily Production</h2>
-                    <button class="primary-btn"><i class='bx bx-plus'></i> Record Production</button>
+                    <button class="primary-btn" onclick="openModal('production-modal')"><i class='bx bx-plus'></i> Record Production</button>
                 </div>
 
                 <div class="kpi-grid">
@@ -421,7 +432,7 @@
             <section id="costing-section" class="page-section">
                 <div class="section-header">
                     <h2>Recipe Costing Engine</h2>
-                    <button class="primary-btn"><i class='bx bx-book-add'></i> Add Recipe</button>
+                    <button class="primary-btn" onclick="openModal('recipe-modal')"><i class='bx bx-book-add'></i> Add Recipe</button>
                 </div>
 
                 <div class="kpi-grid">
@@ -685,6 +696,63 @@
                 </div>
             </section>
 
+            <!-- 9. Settings Section -->
+            <section id="settings-section" class="page-section">
+                <div class="section-header">
+                    <h2 data-lang="menu_settings">Settings</h2>
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="custom-panel">
+                        <h3>General Settings</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Dark Mode</strong>
+                                <p>Toggle system theme</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked onchange="toggleTheme()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>System Language</strong>
+                                <p>Default interface language</p>
+                            </div>
+                            <select onchange="applyLanguage(this.value)">
+                                <option value="en">English (US)</option>
+                                <option value="ar">Arabic (KSA)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="custom-panel">
+                        <h3>User & Permissions</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Self-Registration</strong>
+                                <p>Allow new users to sign up</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Multi-Branch Auth</strong>
+                                <p>Require branch code on signup</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </main>
 
@@ -928,6 +996,100 @@
     </div>
 
     <!-- Scripts -->
+    <!-- Modal: New Production -->
+    <div id="production-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Record Daily Production</h2>
+                <span class="close-modal" onclick="closeModal('production-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="production-form">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Menu Item</label>
+                            <select id="prod-menu-item">
+                                <option>Chicken Shawarma</option>
+                                <option>Healthy Grill Box</option>
+                                <option>Basmati Rice (Batch)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Branch</label>
+                            <select id="prod-branch">
+                                <option>Main Branch</option>
+                                <option>Jeddah Branch</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Quantity Produced</label>
+                            <input type="number" id="prod-qty" value="100">
+                        </div>
+                        <div class="input-group">
+                            <label>Unit</label>
+                            <input type="text" value="Portions" disabled>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal('production-modal')">Cancel</button>
+                <button class="primary-btn" onclick="submitProduction()">Save Production</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: New Recipe -->
+    <div id="recipe-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Recipe</h2>
+                <span class="close-modal" onclick="closeModal('recipe-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="recipe-form">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Recipe Name</label>
+                            <input type="text" id="recipe-name" placeholder="e.g. Beef Burger">
+                        </div>
+                        <div class="input-group">
+                            <label>Category</label>
+                            <select id="recipe-category">
+                                <option>Main Course</option>
+                                <option>Salads</option>
+                                <option>Desserts</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="items-list">
+                        <h4>Ingredients</h4>
+                        <div id="recipe-ingredients-container">
+                            <div class="item-row">
+                                <input type="text" placeholder="Ingredient Name">
+                                <input type="number" placeholder="Qty">
+                                <select>
+                                    <option>Kg</option>
+                                    <option>Gm</option>
+                                    <option>Ltr</option>
+                                    <option>Pcs</option>
+                                </select>
+                                <i class='bx bx-trash text-danger'></i>
+                            </div>
+                        </div>
+                        <button type="button" class="secondary-btn small"><i class='bx bx-plus'></i> Add Ingredient</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal('recipe-modal')">Cancel</button>
+                <button class="primary-btn" onclick="submitRecipe()">Create Recipe</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>
 </body>

@@ -1096,3 +1096,147 @@ body.rtl .styled-table td {
         width: 120px;
     }
 }
+
+/* Settings Layout */
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-info strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.setting-info p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 22px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-card);
+    transition: .4s;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-muted);
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: var(--success);
+    border-color: var(--success);
+}
+
+input:checked+.slider:before {
+    transform: translateX(24px);
+    background-color: white;
+}
+
+/* Comparison Badges */
+.comparison-row {
+    margin-top: -15px;
+    margin-bottom: 25px;
+}
+
+.comp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.comp-badge.up {
+    background: rgba(46, 204, 113, 0.1);
+    color: var(--success);
+}
+
+.comp-badge.down {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--danger);
+}
+
+/* RTL Support */
+body.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+body.rtl .sidebar {
+    border-right: none;
+    border-left: 1px solid var(--border-color);
+}
+
+body.rtl .nav-links li {
+    border-left: none;
+    border-right: 3px solid transparent;
+}
+
+body.rtl .nav-links li.active {
+    border-right-color: var(--primary);
+}
+
+body.rtl .close-modal {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+body.rtl .modal-footer {
+    flex-direction: row-reverse;
+}
+
+.small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+@media (max-width: 992px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+}

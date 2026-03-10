@@ -253,7 +253,8 @@
 
                     <table class="styled-table">
                         <thead>
-                            <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>PO Number</th>
                                 <th>Date</th>
                                 <th>Branch</th>
@@ -270,7 +271,7 @@
                                 <td>#PO-2024-001</td>
                                 <td>24 Oct 2024</td>
                                 <td>Main Branch</td>
-                                <td>Almarai</td>
+                                <td><input type="checkbox"></td><td>Almarai</td>
                                 <td>3,913.04</td>
                                 <td>586.96</td>
                                 <td>4,500.00</td>
@@ -365,7 +366,8 @@
 
                     <table class="styled-table">
                         <thead>
-                            <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Item Name</th>
                                 <th>Category</th>
                                 <th>Unit</th>
@@ -443,7 +445,8 @@
                 <div class="custom-panel">
                     <table class="styled-table">
                         <thead>
-                            <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Date</th>
                                 <th>Menu Item</th>
                                 <th>Branch</th>
@@ -590,7 +593,8 @@
                 <div class="custom-panel">
                     <table class="styled-table">
                         <thead>
-                            <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Branch Name</th>
                                 <th>Location</th>
                                 <th>Manager</th>
@@ -680,7 +684,8 @@
                 <div class="custom-panel">
                     <table class="styled-table">
                         <thead>
-                            <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Username</th>
                                 <th>Role</th>
                                 <th>Branch Access</th>
@@ -736,7 +741,8 @@
                 <div class="custom-panel">
                     <table class="styled-table">
                         <thead>
-                            <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                 <th data-lang="th_date">Date</th>
                                 <th data-lang="th_item">Item Name</th>
                                 <th data-lang="th_qty">Qty Wasted</th>
@@ -807,7 +813,8 @@
 
                     <table class="styled-table" id="suppliers-table">
                         <thead>
-                            <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Supplier Name</th>
                                 <th>Category</th>
                                 <th>Contact</th>
@@ -881,7 +888,8 @@
                         <h3>Supplier Statements (SOA)</h3>
                         <table class="styled-table">
                             <thead>
-                                <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                     <th>Supplier</th>
                                     <th>Paid</th>
                                     <th>Remaining</th>
@@ -891,7 +899,7 @@
                             </thead>
                             <tbody id="soa-table-body">
                                 <tr>
-                                    <td>Almarai</td>
+                                    <td><input type="checkbox"></td><td>Almarai</td>
                                     <td>15,000</td>
                                     <td>5,000</td>
                                     <td>2025-03-30</td>
@@ -905,7 +913,8 @@
                         <h3>Invoices & POs</h3>
                         <table class="styled-table">
                             <thead>
-                                <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                     <th>Date</th>
                                     <th>Reference</th>
                                     <th>Amount</th>
@@ -914,7 +923,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>2024-10-24</td>
+                                    <td><input type="checkbox"></td><td>2024-10-24</td>
                                     <td>#PO-2024-001</td>
                                     <td>4,500</td>
                                     <td>Unpaid</td>
@@ -927,7 +936,8 @@
                     <h3>Urgent Payment Requests (Priority)</h3>
                     <table class="styled-table">
                         <thead>
-                            <tr>
+                            <tr><th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
+                                <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Request Date</th>
                                 <th>Supplier</th>
                                 <th>Reason</th>
@@ -936,9 +946,8 @@
                             </tr>
                         </thead>
                         <tbody id="urgent-requests-body">
-                            <tr>
-                                <td>2025-02-12</td>
-                                <td>Chicken Supplier</td>
+                            <tr><td><input type="checkbox"></td><td>2025-02-12</td>
+                                <td><input type="checkbox"></td><td>Chicken Supplier</td>
                                 <td>Daily Production - Low Stock</td>
                                 <td>Procurement Dept.</td>
                                 <td><span class="status-badge pending" style="background: #e67e22; color:#fff;">Urgent</span></td>

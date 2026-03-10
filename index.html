@@ -21,10 +21,7 @@
 
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
-        <div class="logo">
-            <i class='bx bx-restaurant'></i>
-            <span>MAN-3 Plus</span>
-        </div>
+
         <div class="user-info">
             <div class="user-details" style="padding-left: 10px;">
                 <h4 data-lang="admin_user">Admin User</h4>
@@ -37,12 +34,11 @@
             <li data-target="inventory-section"><i class='bx bx-package'></i><span>Inventory</span></li>
             <li data-target="production-section"><i class='bx bx-dish'></i><span>Production</span></li>
             <li data-target="costing-section"><i class='bx bx-line-chart'></i><span>Costing</span></li>
-            <li data-target="admin-section"><i class='bx bx-buildings'></i><span>Branches</span></li>
+            <li data-target="admin-section"><i class='bx bx-buildings'></i><span data-lang="menu_branches">Branches</span></li>
+            <li data-target="finance-section"><i class='bx bx-money'></i><span data-lang="menu_finance">Finance</span></li>
             <li data-target="users-section"><i class='bx bx-user'></i><span data-lang="menu_users">Users</span></li>
-            <li data-target="wastage-section"><i class='bx bx-trash'></i><span data-lang="menu_wastage">Wastage</span>
-            </li>
-            <li data-target="settings-section"><i class='bx bx-cog'></i><span data-lang="menu_settings">Settings</span>
-            </li>
+            <li data-target="wastage-section"><i class='bx bx-trash'></i><span data-lang="menu_wastage">Wastage</span></li>
+            <li data-target="settings-section"><i class='bx bx-cog'></i><span data-lang="menu_settings">Settings</span></li>
         </ul>
         <div class="bottom-menu">
             <ul>
@@ -84,15 +80,15 @@
             <section id="dashboard-section" class="page-section active">
                 <div class="dashboard-banner">
                     <div class="banner-content">
-                        <h1>Welcome, ✨🌙</h1>
-                        <p>Wishing you a blessed Ramadan</p>
+                        <h1><span data-lang="welcome_user">Welcome</span>, <span id="display-user-name">User</span></h1>
+                        <p data-lang="system_ready">System is ready for operations</p>
                     </div>
                 </div>
 
                 <div class="dashboard-tabs">
-                    <button class="dash-tab active">General</button>
-                    <button class="dash-tab">Branches</button>
-                    <button class="dash-tab">Kitchen <span class="badge-new">New</span></button>
+                    <button class="dash-tab active" data-lang="general_tab">General</button>
+                    <button class="dash-tab" data-lang="branches_tab">Branches</button>
+                    <button class="dash-tab" data-lang="kitchen_tab">Kitchen</button>
                 </div>
 
                 <div class="dashboard-controls-row">
@@ -105,11 +101,15 @@
                         <input type="date" id="dash-main-date" value="2025-02-10">
                     </div>
                     <div class="compare-control">
-                        <span>Compare</span>
+                        <span data-lang="compare_label">Compare</span>
                         <label class="switch small">
-                            <input type="checkbox">
+                            <input type="checkbox" id="dash-compare-toggle">
                             <span class="slider round"></span>
                         </label>
+                    </div>
+                    <div class="export-actions">
+                        <button class="export-btn-mini" onclick="exportData('pdf')">PDF</button>
+                        <button class="export-btn-mini" onclick="exportData('xls')">XLS</button>
                     </div>
                     <button class="icon-filter-btn"><i class='bx bx-filter-alt'></i></button>
                 </div>
@@ -117,106 +117,76 @@
                 <div class="mini-kpi-grid">
                     <div class="kpi-mini-card">
                         <div class="card-header">
-                            <span>Orders</span>
-                            <a href="#" class="view-report">View Report</a>
+                            <span data-lang="po_label">P.O.</span>
+                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
                         </div>
                         <div class="card-body">
-                            <h2>11</h2>
-                            <div class="mini-chart-container">
-                                <canvas id="miniChartOrders"></canvas>
-                            </div>
+                            <h2 id="kpi-po-count">11</h2>
+                            <div class="mini-chart-container"><canvas id="miniChartPO"></canvas></div>
                         </div>
                     </div>
                     <div class="kpi-mini-card">
                         <div class="card-header">
-                            <span>Net Sales</span>
-                            <a href="#" class="view-report">View Report</a>
+                            <span data-lang="branch_orders_label">Branch Orders</span>
+                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
                         </div>
                         <div class="card-body">
-                            <h2><i class='bx bx-star'></i> 667.83</h2>
-                            <div class="mini-chart-container">
-                                <canvas id="miniChartSales"></canvas>
-                            </div>
+                            <h2><i class='bx bx-store-alt'></i> <span id="kpi-branch-orders">667.83</span></h2>
+                            <div class="mini-chart-container"><canvas id="miniChartBranchOrders"></canvas></div>
                         </div>
                     </div>
                     <div class="kpi-mini-card">
                         <div class="card-header">
-                            <span>Net Payments</span>
-                            <a href="#" class="view-report">View Report</a>
+                            <span data-lang="total_orders_label">Total Orders</span>
+                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
                         </div>
                         <div class="card-body">
-                            <h2><i class='bx bx-star'></i> 768</h2>
-                            <div class="mini-chart-container">
-                                <canvas id="miniChartPayments"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="kpi-mini-card">
-                        <div class="card-header">
-                            <span>Return Amount</span>
-                            <a href="#" class="view-report">View Report</a>
-                        </div>
-                        <div class="card-body">
-                            <h2><i class='bx bx-star'></i> 0</h2>
-                            <div class="mini-chart-container">
-                                <canvas id="miniChartReturns"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="kpi-mini-card">
-                        <div class="card-header">
-                            <span>Discount Amount</span>
-                            <a href="#" class="view-report">View Report</a>
-                        </div>
-                        <div class="card-body">
-                            <h2><i class='bx bx-star'></i> 0</h2>
-                            <div class="mini-chart-container">
-                                <canvas id="miniChartDiscounts"></canvas>
-                            </div>
+                            <h2><i class='bx bx-spreadsheet'></i> <span id="kpi-total-orders">768</span></h2>
+                            <div class="mini-chart-container"><canvas id="miniChartTotalOrders"></canvas></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="large-chart-card custom-panel">
                     <div class="card-header">
-                        <span>Order types</span>
-                        <a href="#" class="view-report">View Report</a>
+                        <span data-lang="daily_usage_label">Daily Product Usage</span>
+                        <a href="#" class="view-report" data-lang="view_report">View Report</a>
                     </div>
                     <div class="chart-wrapper">
-                        <canvas id="orderTypesChart"></canvas>
+                        <canvas id="dailyUsageChart"></canvas>
                     </div>
                 </div>
 
                 <div class="hourly-sales-card custom-panel">
                     <div class="card-header">
-                        <span>Hourly Sales</span>
+                        <span data-lang="hourly_po_label">Hourly P.O.</span>
                     </div>
                     <div class="chart-wrapper">
-                        <canvas id="hourlySalesChart"></canvas>
+                        <canvas id="hourlyPOChart"></canvas>
                     </div>
                 </div>
 
                 <div class="pie-charts-grid">
                     <div class="pie-card custom-panel">
                         <div class="card-header">
-                            <span>Top Products by Net Sales (SAR)</span>
-                            <a href="#" class="view-report">View Report</a>
+                            <span data-lang="top_production_label">Top Production</span>
+                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
                         </div>
-                        <canvas id="productsPieChart"></canvas>
+                        <canvas id="productionPieChart"></canvas>
                     </div>
                     <div class="pie-card custom-panel">
                         <div class="card-header">
-                            <span>Top Payments (SAR)</span>
-                            <a href="#" class="view-report">View Report</a>
+                            <span data-lang="top_wastage_label">Top Wastage</span>
+                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
                         </div>
-                        <canvas id="paymentsPieChart"></canvas>
+                        <canvas id="wastagePieChart"></canvas>
                     </div>
                     <div class="pie-card custom-panel">
                         <div class="card-header">
-                            <span>Top Branches by Net Sales (SAR)</span>
-                            <a href="#" class="view-report">View Report</a>
+                            <span data-lang="top_branches_production_label">Top Branches Production</span>
+                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
                         </div>
-                        <canvas id="branchesPieChart"></canvas>
+                        <canvas id="branchesProductionPieChart"></canvas>
                     </div>
                 </div>
             </section>
@@ -226,9 +196,9 @@
                 <div class="section-header">
                     <h2>Purchasing Orders</h2>
                     <div class="header-buttons">
+                        <button class="warning-btn" onclick="openModal('urgent-payment-modal')" style="background: #e67e22; color: #fff; border:none; padding: 10px 15px; border-radius:6px; cursor:pointer;"><i class='bx bx-alarm-exclamation'></i> Urgent Payment</button>
                         <button class="secondary-btn" id="export-po-btn"><i class='bx bx-export'></i> Export P.O.</button>
-                        <button class="primary-btn" onclick="openModal('po-modal')"><i class='bx bx-plus'></i> New
-                        PO</button>
+                        <button class="primary-btn" onclick="openModal('po-modal')"><i class='bx bx-plus'></i> New PO</button>
                     </div>
                 </div>
 
@@ -287,6 +257,8 @@
                                 <th>Date</th>
                                 <th>Branch</th>
                                 <th>Supplier</th>
+                                <th>Subtotal</th>
+                                <th>VAT (15%)</th>
                                 <th>Total (SAR)</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -298,6 +270,8 @@
                                 <td>24 Oct 2024</td>
                                 <td>Main Branch</td>
                                 <td>Almarai</td>
+                                <td>3,913.04</td>
+                                <td>586.96</td>
                                 <td>4,500.00</td>
                                 <td><span class="status-badge pending">L1 Approval</span></td>
                                 <td>
@@ -631,7 +605,10 @@
                                 <td>Ahmed Ali</td>
                                 <td>45</td>
                                 <td><span class="status-badge approved">Active</span></td>
-                                <td><button class="action-btn"><i class='bx bx-edit'></i></button></td>
+                                <td>
+                                    <button class="action-btn" onclick="openModal('edit-branch-modal')"><i class='bx bx-edit'></i></button>
+                                    <button class="action-btn delete" onclick="deleteBranch(this)"><i class='bx bx-trash'></i></button>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Jeddah Branch</td>
@@ -639,7 +616,10 @@
                                 <td>Sami F.</td>
                                 <td>28</td>
                                 <td><span class="status-badge approved">Active</span></td>
-                                <td><button class="action-btn"><i class='bx bx-edit'></i></button></td>
+                                <td>
+                                    <button class="action-btn" onclick="openModal('edit-branch-modal')"><i class='bx bx-edit'></i></button>
+                                    <button class="action-btn delete" onclick="deleteBranch(this)"><i class='bx bx-trash'></i></button>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Dammam Cloud Kitchen</td>
@@ -647,7 +627,10 @@
                                 <td>Omar K.</td>
                                 <td>15</td>
                                 <td><span class="status-badge pending">Setup</span></td>
-                                <td><button class="action-btn"><i class='bx bx-edit'></i></button></td>
+                                <td>
+                                    <button class="action-btn" onclick="openModal('edit-branch-modal')"><i class='bx bx-edit'></i></button>
+                                    <button class="action-btn delete" onclick="deleteBranch(this)"><i class='bx bx-trash'></i></button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -762,6 +745,92 @@
                         </thead>
                         <tbody id="wastage-table-body">
                             <!-- Dynamic Rows Here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-footer">
+                    <button class="secondary-btn" onclick="exportSection('wastage', 'pdf')">Export PDF</button>
+                    <button class="secondary-btn" onclick="exportSection('wastage', 'xls')">Export XLS</button>
+                </div>
+            </section>
+
+            <!-- 9. Finance Section -->
+            <section id="finance-section" class="page-section">
+                <div class="section-header">
+                    <h2 data-lang="menu_finance">Finance Department</h2>
+                    <div class="header-buttons">
+                        <button class="secondary-btn" onclick="exportSection('finance', 'pdf')">PDF</button>
+                        <button class="secondary-btn" onclick="exportSection('finance', 'xls')">XLS</button>
+                    </div>
+                </div>
+
+                <div class="finance-grid">
+                    <div class="custom-panel">
+                        <h3>Supplier Statements (SOA)</h3>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Supplier</th>
+                                    <th>Paid</th>
+                                    <th>Remaining</th>
+                                    <th>Deadline</th>
+                                    <th>Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody id="soa-table-body">
+                                <tr>
+                                    <td>Almarai</td>
+                                    <td>15,000</td>
+                                    <td>5,000</td>
+                                    <td>2025-03-30</td>
+                                    <td><span class="status-badge pending">Normal</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="custom-panel">
+                        <h3>Invoices & POs</h3>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Reference</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-10-24</td>
+                                    <td>#PO-2024-001</td>
+                                    <td>4,500</td>
+                                    <td>Unpaid</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="custom-panel" style="margin-top:20px;">
+                    <h3>Urgent Payment Requests (Priority)</h3>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Request Date</th>
+                                <th>Supplier</th>
+                                <th>Reason</th>
+                                <th>Requested By</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="urgent-requests-body">
+                            <tr>
+                                <td>2025-02-12</td>
+                                <td>Chicken Supplier</td>
+                                <td>Daily Production - Low Stock</td>
+                                <td>Procurement Dept.</td>
+                                <td><span class="status-badge pending" style="background: #e67e22; color:#fff;">Urgent</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1082,7 +1151,7 @@
     <div id="production-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Record Daily Production</h2>
+                <h2 data-lang="record_production">Record Daily Production</h2>
                 <span class="close-modal" onclick="closeModal('production-modal')">&times;</span>
             </div>
             <div class="modal-body">
@@ -1090,11 +1159,7 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label>Menu Item</label>
-                            <select id="prod-menu-item">
-                                <option>Chicken Shawarma</option>
-                                <option>Healthy Grill Box</option>
-                                <option>Basmati Rice (Batch)</option>
-                            </select>
+                            <input type="text" id="prod-menu-item" placeholder="Chicken Keto Box">
                         </div>
                         <div class="input-group">
                             <label>Branch</label>
@@ -1104,21 +1169,45 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label>Quantity Produced</label>
-                            <input type="number" id="prod-qty" value="100">
+                    <div class="yield-box" style="background:#1a1a1a; padding:15px; border-radius:8px; margin:15px 0;">
+                        <h4>Yield Calculation</h4>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Raw Weight (kg)</label>
+                                <input type="number" id="raw-weight-prod" step="0.01" oninput="calculateYieldProd()">
+                            </div>
+                            <div class="input-group">
+                                <label>Cooking Loss / Water %</label>
+                                <input type="number" id="loss-pct-prod" value="15" oninput="calculateYieldProd()">
+                            </div>
+                            <div class="input-group">
+                                <label>Final Produced (kg)</label>
+                                <input type="number" id="final-weight-prod" readonly>
+                            </div>
                         </div>
+                    </div>
+                    <div class="ingredients-list">
+                        <h4>Ingredients Used</h4>
+                        <div id="prod-ingredients-list">
+                            <div class="item-row">
+                                <input type="text" placeholder="Ingredient Name">
+                                <input type="number" placeholder="Qty">
+                                <input type="text" placeholder="Unit" value="kg">
+                            </div>
+                        </div>
+                        <button type="button" class="secondary-btn small" onclick="addProdIngredient()">+ Add Ingredient</button>
+                    </div>
+                    <div class="form-row" style="margin-top:15px;">
                         <div class="input-group">
-                            <label>Unit</label>
-                            <input type="text" value="Portions" disabled>
+                            <label>Portions Produced</label>
+                            <input type="number" id="prod-portions" value="10">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="secondary-btn" onclick="closeModal('production-modal')">Cancel</button>
-                <button class="primary-btn" onclick="submitProduction()">Save Production</button>
+                <button class="primary-btn" onclick="submitProduction()">Record & Update Inventory</button>
             </div>
         </div>
     </div>
@@ -1127,7 +1216,7 @@
     <div id="recipe-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Add New Recipe</h2>
+                <h2>Add / Edit Recipe</h2>
                 <span class="close-modal" onclick="closeModal('recipe-modal')">&times;</span>
             </div>
             <div class="modal-body">
@@ -1138,36 +1227,30 @@
                             <input type="text" id="recipe-name" placeholder="e.g. Beef Burger">
                         </div>
                         <div class="input-group">
-                            <label>Category</label>
-                            <select id="recipe-category">
-                                <option>Main Course</option>
-                                <option>Salads</option>
-                                <option>Desserts</option>
+                            <label>Target Branch</label>
+                            <select id="recipe-branch">
+                                <option value="all">Global (All Branches)</option>
+                                <option value="main">Main Branch</option>
+                                <option value="jeddah">Jeddah Branch</option>
                             </select>
                         </div>
                     </div>
                     <div class="items-list">
-                        <h4>Ingredients</h4>
+                        <h4>Ingredients & Yield</h4>
                         <div id="recipe-ingredients-container">
                             <div class="item-row">
-                                <input type="text" placeholder="Ingredient Name">
+                                <input type="text" placeholder="Ingredient">
                                 <input type="number" placeholder="Qty">
-                                <select>
-                                    <option>Kg</option>
-                                    <option>Gm</option>
-                                    <option>Ltr</option>
-                                    <option>Pcs</option>
-                                </select>
-                                <i class='bx bx-trash text-danger'></i>
+                                <input type="text" placeholder="Unit" value="kg">
                             </div>
                         </div>
-                        <button type="button" class="secondary-btn small"><i class='bx bx-plus'></i> Add Ingredient</button>
+                        <button type="button" class="secondary-btn small" onclick="addRecipeIngredient()">+ Add Ingredient</button>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="secondary-btn" onclick="closeModal('recipe-modal')">Cancel</button>
-                <button class="primary-btn" onclick="submitRecipe()">Create Recipe</button>
+                <button class="primary-btn" onclick="submitRecipe()">Save Recipe</button>
             </div>
         </div>
     </div>
@@ -1184,22 +1267,123 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label>Item Name</label>
-                            <input type="text" placeholder="e.g. Tomato">
+                            <input type="text" id="inv-item-name" placeholder="e.g. Tomato">
                         </div>
                         <div class="input-group">
                             <label>Category</label>
-                            <select>
-                                <option>Vegetables</option>
-                                <option>Meat</option>
-                                <option>Dairy</option>
-                            </select>
+                            <input type="text" id="inv-item-cat" placeholder="Manual Category">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Quantity</label>
+                            <input type="number" id="inv-item-qty" placeholder="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Unit</label>
+                            <input type="text" id="inv-item-unit" placeholder="kg / box">
+                        </div>
+                        <div class="input-group">
+                            <label>Unit Price (No VAT)</label>
+                            <input type="number" id="inv-item-price" placeholder="0.00">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="secondary-btn" onclick="closeModal('add-item-modal')">Cancel</button>
-                <button class="primary-btn" onclick="submitAddItem()">Save Item</button>
+                <button class="primary-btn" onclick="submitAddItem()">Add Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Manage Branch -->
+    <div id="edit-branch-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add / Edit Branch</h2>
+                <span class="close-modal" onclick="closeModal('edit-branch-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="branch-form">
+                    <div class="input-group">
+                        <label>Branch Name</label>
+                        <input type="text" id="branch-name-val" placeholder="e.g. Jeddah Branch">
+                    </div>
+                    <div class="input-group">
+                        <label>Location</label>
+                        <input type="text" id="branch-loc-val" placeholder="City, District">
+                    </div>
+                    <div class="input-group">
+                        <label>Manager</label>
+                        <input type="text" id="branch-mgr-val" placeholder="Manager Name">
+                    </div>
+                    <div class="input-group">
+                        <label>Status</label>
+                        <select id="branch-status-val">
+                            <option>Active</option>
+                            <option>Inactive</option>
+                            <option>In Setup</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal('edit-branch-modal')">Cancel</button>
+                <button class="primary-btn" onclick="submitBranch()">Save Branch</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: New Purchase Order -->
+    <div id="po-modal" class="modal">
+        <div class="modal-content" style="width: 700px;">
+            <div class="modal-header">
+                <h2>Create Purchase Order</h2>
+                <span class="close-modal" onclick="closeModal('po-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="po-form">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Supplier Name</label>
+                            <input type="text" id="po-supplier" placeholder="e.g. Almarai">
+                        </div>
+                        <div class="input-group">
+                            <label>Branch Name</label>
+                            <select id="po-branch">
+                                <option>Main Branch</option>
+                                <option>Jeddah Branch</option>
+                                <option>Dammam Branch</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="items-list">
+                        <h4>PO Items</h4>
+                        <div id="po-items-container">
+                            <div class="item-row" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr 40px;">
+                                <input type="text" id="po-item-name" placeholder="Item">
+                                <input type="number" id="po-item-qty" placeholder="Qty" oninput="calculatePOTotal()">
+                                <input type="text" id="po-item-unit" placeholder="Unit" value="kg">
+                                <input type="number" id="po-item-price" placeholder="Price (No VAT)" oninput="calculatePOTotal()">
+                                <div class="vat-field">
+                                    <label style="font-size: 10px; display: block;">VAT 15%</label>
+                                    <input type="number" id="po-item-vat" readonly style="width: 70px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-footer-totals" style="text-align: right; margin-top: 20px; font-size: 18px;">
+                        <strong>Total (inc. VAT): <span id="po-total-calc">0.00</span> SAR</strong>
+                    </div>
+                    <div class="approval-flow" style="margin-top: 15px; font-size: 12px; color: #888;">
+                        <p>Approval Flow: 1. Procurement Officer -> 2. Asst. -> 3. Finance</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal('po-modal')">Cancel</button>
+                <button class="primary-btn" onclick="submitPO()">Create & Send for Approval</button>
             </div>
         </div>
     </div>
@@ -1216,14 +1400,14 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label>From Branch</label>
-                            <select>
+                            <select id="transfer-from">
                                 <option>Main Warehouse</option>
                                 <option>Jeddah Branch</option>
                             </select>
                         </div>
                         <div class="input-group">
                             <label>To Branch</label>
-                            <select>
+                            <select id="transfer-to">
                                 <option>Riyadh Branch</option>
                                 <option>Jeddah Branch</option>
                             </select>
@@ -1231,10 +1415,14 @@
                     </div>
                     <div class="input-group">
                         <label>Item</label>
-                        <select>
+                        <select id="transfer-item">
                             <option>Chicken Breast</option>
                             <option>Basmati Rice</option>
                         </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Quantity to Transfer</label>
+                        <input type="number" id="transfer-qty" placeholder="0.00">
                     </div>
                 </form>
             </div>
@@ -1245,8 +1433,31 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="app.js"></script>
+    <!-- Modal: Urgent Payment Request -->
+    <div id="urgent-payment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Request Urgent Payment</h2>
+                <span class="close-modal" onclick="closeModal('urgent-payment-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="urgent-form">
+                    <div class="input-group">
+                        <label>Priority Supplier</label>
+                        <input type="text" id="urgent-supplier" placeholder="e.g. Chicken Supplier">
+                    </div>
+                    <div class="input-group">
+                        <label>Reason for Urgency</label>
+                        <textarea id="urgent-reason" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px; border-radius: 6px;" placeholder="e.g. Daily Production"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal('urgent-payment-modal')">Cancel</button>
+                <button class="primary-btn" onclick="submitUrgentRequest()" style="background: #e67e22;">Send Priority Message</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

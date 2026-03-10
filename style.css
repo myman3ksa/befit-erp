@@ -307,7 +307,7 @@ td {
     transition: var(--transition);
 }
 
-export-btn:hover {
+.export-btn:hover {
     background-color: var(--border-color);
 }
 
@@ -1473,8 +1473,60 @@ body.rtl .modal-footer {
     .mini-kpi-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 992px) {
-    .settings-grid {
-        grid-template-columns: 1fr;
-    }
-}
+/* Dashboard & Finance Utility */
+.finance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+    .finance-grid { grid-template-columns: 1fr; }
+}
+
+.export-btn-mini {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.export-btn-mini:hover {
+    border-color: #5D3FD3;
+    color: #5D3FD3;
+}
+
+/* Modal Utility Styles */
+.yield-box, .ingredients-list, .items-list, .yield-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.yield-box h4, .ingredients-list h4, .items-list h4, .yield-section h4 {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #5D3FD3;
+    text-transform: uppercase;
+}
+
+.item-row, .ingredient-row {
+    display: grid;
+    grid-template-columns: 1fr 100px 80px 40px;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.item-row input, .ingredient-row input, .item-row select {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 6px;
+    color: var(--text-main);
+}

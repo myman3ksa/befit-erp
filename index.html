@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -35,6 +35,7 @@
             <li data-target="production-section"><i class='bx bx-dish'></i><span>Production</span></li>
             <li data-target="costing-section"><i class='bx bx-line-chart'></i><span>Costing</span></li>
             <li data-target="admin-section"><i class='bx bx-buildings'></i><span data-lang="menu_branches">Branches</span></li>
+            <li data-target="suppliers-section"><i class='bx bx-store'></i><span>Suppliers</span></li>
             <li data-target="finance-section"><i class='bx bx-money'></i><span data-lang="menu_finance">Finance</span></li>
             <li data-target="users-section"><i class='bx bx-user'></i><span data-lang="menu_users">Users</span></li>
             <li data-target="wastage-section"><i class='bx bx-trash'></i><span data-lang="menu_wastage">Wastage</span></li>
@@ -754,6 +755,117 @@
                 </div>
             </section>
 
+            <!-- SUPPLIERS SECTION -->
+            <section id="suppliers-section" class="page-section">
+                <div class="section-header">
+                    <h2>Supplier Management</h2>
+                    <div class="header-buttons">
+                        <button class="primary-btn" onclick="openModal('add-supplier-modal')"><i class='bx bx-plus'></i> Add Supplier</button>
+                        <button class="secondary-btn" onclick="exportSuppliers('pdf')"><i class='bx bx-export'></i> PDF</button>
+                        <button class="secondary-btn" onclick="exportSuppliers('xls')"><i class='bx bx-spreadsheet'></i> XLS</button>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon purchases"><i class='bx bx-store'></i></div>
+                        <div class="kpi-info"><h3>Total Suppliers</h3><p id="kpi-sup-total">3 <span class="subtitle">Active</span></p></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon pending"><i class='bx bx-credit-card'></i></div>
+                        <div class="kpi-info"><h3>Total Payable</h3><p id="kpi-sup-payable">20,000 <span class="currency">SAR</span></p></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon prod"><i class='bx bx-check-circle'></i></div>
+                        <div class="kpi-info"><h3>Paid This Month</h3><p id="kpi-sup-paid">43,500 <span class="currency">SAR</span></p></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon inv"><i class='bx bx-error-circle'></i></div>
+                        <div class="kpi-info"><h3>Overdue</h3><p id="kpi-sup-overdue">1 <span class="subtitle">Supplier</span></p></div>
+                    </div>
+                </div>
+
+                <div class="custom-panel">
+                    <div class="panel-toolbar">
+                        <input type="text" id="supplier-search" placeholder="Search supplier name..." class="search-input" oninput="filterSuppliers()">
+                        <select id="supplier-status-filter" onchange="filterSuppliers()">
+                            <option value="all">Status: All</option>
+                            <option value="active">Active</option>
+                            <option value="overdue">Overdue</option>
+                            <option value="settled">Settled</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <select id="supplier-cat-filter" onchange="filterSuppliers()">
+                            <option value="all">Category: All</option>
+                            <option value="meat">Meat</option>
+                            <option value="dairy">Dairy</option>
+                            <option value="dry">Dry Goods</option>
+                            <option value="vegetables">Vegetables</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <table class="styled-table" id="suppliers-table">
+                        <thead>
+                            <tr>
+                                <th>Supplier Name</th>
+                                <th>Category</th>
+                                <th>Contact</th>
+                                <th>Total Balance (SAR)</th>
+                                <th>Paid (SAR)</th>
+                                <th>Remaining (SAR)</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppliers-table-body">
+                            <tr data-status="active" data-category="dairy" data-name="almarai">
+                                <td><strong>Almarai</strong></td>
+                                <td>Dairy</td>
+                                <td>+966-11-2334455</td>
+                                <td>20,000.00</td>
+                                <td>15,000.00</td>
+                                <td><span style="color:#e74c3c;font-weight:700;">5,000.00</span></td>
+                                <td>2025-03-30</td>
+                                <td><span class="status-badge approved">Active</span></td>
+                                <td>
+                                    <button class="action-btn" onclick="editSupplier(this)"><i class='bx bx-edit'></i></button>
+                                    <button class="action-btn delete" onclick="deleteSupplier(this)"><i class='bx bx-trash'></i></button>
+                                </td>
+                            </tr>
+                            <tr data-status="overdue" data-category="meat" data-name="chicken supplier">
+                                <td><strong>Chicken Supplier</strong></td>
+                                <td>Meat</td>
+                                <td>+966-12-5556677</td>
+                                <td>35,000.00</td>
+                                <td>20,000.00</td>
+                                <td><span style="color:#e67e22;font-weight:700;">15,000.00</span></td>
+                                <td>2025-04-05</td>
+                                <td><span class="status-badge pending" style="background:#e67e22;color:#fff;">Overdue</span></td>
+                                <td>
+                                    <button class="action-btn" onclick="editSupplier(this)"><i class='bx bx-edit'></i></button>
+                                    <button class="action-btn delete" onclick="deleteSupplier(this)"><i class='bx bx-trash'></i></button>
+                                </td>
+                            </tr>
+                            <tr data-status="settled" data-category="dry" data-name="nadec">
+                                <td><strong>Nadec</strong></td>
+                                <td>Dry Goods</td>
+                                <td>+966-11-7778899</td>
+                                <td>8,500.00</td>
+                                <td>8,500.00</td>
+                                <td><span style="color:#2ecc71;font-weight:700;">0.00</span></td>
+                                <td>&#8212;</td>
+                                <td><span class="status-badge approved">Settled</span></td>
+                                <td>
+                                    <button class="action-btn" onclick="editSupplier(this)"><i class='bx bx-edit'></i></button>
+                                    <button class="action-btn delete" onclick="deleteSupplier(this)"><i class='bx bx-trash'></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
             <!-- 9. Finance Section -->
             <section id="finance-section" class="page-section">
                 <div class="section-header">
@@ -1440,6 +1552,72 @@
         </div>
     </div>
 
+    <!-- Modal: Add Supplier -->
+    <div id="add-supplier-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add / Edit Supplier</h2>
+                <span class="close-modal" onclick="closeModal('add-supplier-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="add-supplier-form">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Supplier Name <span class="text-danger">*</span></label>
+                            <input type="text" id="sup-name" placeholder="e.g. Almarai">
+                        </div>
+                        <div class="input-group">
+                            <label>Category</label>
+                            <select id="sup-category">
+                                <option value="meat">Meat</option>
+                                <option value="dairy">Dairy</option>
+                                <option value="dry">Dry Goods</option>
+                                <option value="vegetables">Vegetables</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Contact / Phone</label>
+                            <input type="text" id="sup-contact" placeholder="+966-XX-XXXXXXX">
+                        </div>
+                        <div class="input-group">
+                            <label>Due Date</label>
+                            <input type="date" id="sup-due">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Total Balance (SAR) <span class="text-danger">*</span></label>
+                            <input type="number" id="sup-total" placeholder="0.00" oninput="calcSupplierRemaining()">
+                        </div>
+                        <div class="input-group">
+                            <label>Amount Paid (SAR)</label>
+                            <input type="number" id="sup-paid" placeholder="0.00" oninput="calcSupplierRemaining()">
+                        </div>
+                        <div class="input-group">
+                            <label>Remaining (SAR)</label>
+                            <input type="number" id="sup-remaining" placeholder="0.00" readonly style="opacity:0.7;">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Status</label>
+                        <select id="sup-status">
+                            <option value="active">Active</option>
+                            <option value="overdue">Overdue</option>
+                            <option value="settled">Settled</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal('add-supplier-modal')">Cancel</button>
+                <button class="primary-btn" onclick="submitSupplier()">Save Supplier</button>
+            </div>
+        </div>
+    </div>
     <!-- Modal: Urgent Payment Request -->
     <div id="urgent-payment-modal" class="modal">
         <div class="modal-content">

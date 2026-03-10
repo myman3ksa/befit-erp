@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // SUPABASE CLIENT
 // ============================================================
 const { createClient } = supabase;
@@ -873,9 +873,98 @@ window.submitUrgentRequest = function() {
     closeModal('urgent-payment-modal');
 };
 
+// --- Supplier Management Logic ---
+window.calcSupplierRemaining = function() {
+    const total = parseFloat(document.getElementById('sup-total').value) || 0;
+    const paid = parseFloat(document.getElementById('sup-paid').value) || 0;
+    document.getElementById('sup-remaining').value = (total - paid).toFixed(2);
+};
+
+window.submitSupplier = function() {
+    const name = document.getElementById('sup-name').value;
+    const category = document.getElementById('sup-category').value;
+    const contact = document.getElementById('sup-contact').value;
+    const totalInput = document.getElementById('sup-total').value;
+    const paidInput = document.getElementById('sup-paid').value;
+    
+    const total = parseFloat(totalInput) || 0;
+    const paid = parseFloat(paidInput) || 0;
+    const remaining = total - paid;
+    const due = document.getElementById('sup-due').value || '—';
+    const status = document.getElementById('sup-status').value;
+
+    if (!name || totalInput === "") {
+        alert('Supplier Name and Total Balance are required.');
+        return;
+    }
+
+    // Add to Supplier Table
+    const tbody = document.getElementById('suppliers-table-body');
+    if (tbody) {
+        const row = document.createElement('tr');
+        row.setAttribute('data-status', status);
+        row.setAttribute('data-category', category);
+        row.setAttribute('data-name', name.toLowerCase());
+
+        const statusClass = (status === 'active' || status === 'settled') ? 'approved' : 'pending';
+        const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+        const colorRem = remaining > 0 ? (status === 'overdue' ? '#e67e22' : '#e74c3c') : '#2ecc71';
+
+        row.innerHTML = '<td><strong>' + name + '</strong></td>' +
+                        '<td>' + category.charAt(0).toUpperCase() + category.slice(1) + '</td>' +
+                        '<td>' + contact + '</td>' +
+                        '<td>' + total.toLocaleString('en-US', { minimumFractionDigits: 2 }) + '</td>' +
+                        '<td>' + paid.toLocaleString('en-US', { minimumFractionDigits: 2 }) + '</td>' +
+                        '<td><span style="color:' + colorRem + '; font-weight:700;">' + remaining.toLocaleString('en-US', { minimumFractionDigits: 2 }) + '</span></td>' +
+                        '<td>' + due + '</td>' +
+                        '<td><span class="status-badge ' + statusClass + '">' + statusLabel + '</span></td>' +
+                        '<td>' +
+                            '<button class="action-btn" onclick="openModal(\'add-supplier-modal\')"><i class=\'bx bx-edit\'></i></button>' +
+                            '<button class="action-btn delete" onclick="this.closest(\'tr\').remove();"><i class=\'bx bx-trash\'></i></button>' +
+                        '</td>';
+        tbody.prepend(row);
+    }
+
+    const soaBody = document.getElementById('soa-table-body');
+    if (soaBody) {
+        const row = document.createElement('tr');
+        const priority = remaining > 10000 ? 'Urgent' : 'Normal';
+        const priorityClass = priority === 'Urgent' ? 'pending' : 'approved';
+        const priorityStyle = priority === 'Urgent' ? 'background:#e67e22; color:#fff;' : '';
+
+        row.innerHTML = '<td>' + name + '</td>' +
+                        '<td>' + total.toLocaleString() + '</td>' +
+                        '<td>' + paid.toLocaleString() + '</td>' +
+                        '<td>' + remaining.toLocaleString() + '</td>' +
+                        '<td>' + due + '</td>' +
+                        '<td><span class="status-badge ' + priorityClass + '" style="' + priorityStyle + '">' + priority + '</span></td>';
+        soaBody.prepend(row);
+    }
+
+    alert('Supplier record created and added to Finance Statement of Account.');
+    closeModal('add-supplier-modal');
+};
+
+window.filterSuppliers = function() {
+    const search = document.getElementById('supplier-search').value.toLowerCase();
+    const status = document.getElementById('supplier-status-filter').value;
+    const cat = document.getElementById('supplier-cat-filter').value;
+    const rows = document.querySelectorAll('#suppliers-table-body tr');
+
+    rows.forEach(row => {
+        const nameMatch = row.getAttribute('data-name').includes(search);
+        const statusMatch = status === 'all' || row.getAttribute('data-status') === status;
+        const catMatch = cat === 'all' || row.getAttribute('data-category') === cat;
+        row.style.display = (nameMatch && statusMatch && catMatch) ? '' : 'none';
+    });
+};
+
+window.exportSuppliers = function(format) {
+    alert('Exporting Supplier list and aging report to ' + format.toUpperCase() + '...');
+};
+
 // Expose global functions
 window.toggleAuthMode = toggleAuthMode;
-
 window.handleAuthSubmit = handleAuthSubmit;
 window.submitWastage = submitWastage;
 window.submitProduction = submitProduction;

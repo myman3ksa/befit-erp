@@ -29,6 +29,22 @@ const translations = {
         th_qty: 'Qty Wasted',
         th_reason: 'Reason',
         th_branch: 'Branch',
+        welcome_banner: 'Welcome, ✨🌙',
+        ramadan_wish: 'Wishing you a blessed Ramadan',
+        general_tab: 'General',
+        branches_tab: 'Branches',
+        kitchen_tab: 'Kitchen',
+        orders_label: 'Orders',
+        net_sales_label: 'Net Sales',
+        net_payments_label: 'Net Payments',
+        return_amount_label: 'Return Amount',
+        discount_amount_label: 'Discount Amount',
+        view_report: 'View Report',
+        order_types: 'Order types',
+        hourly_sales: 'Hourly Sales',
+        top_products: 'Top Products by Net Sales (SAR)',
+        top_payments: 'Top Payments (SAR)',
+        top_branches: 'Top Branches by Net Sales (SAR)'
     },
     ar: {
         admin_user: 'مستخدم الإدارة',
@@ -49,6 +65,22 @@ const translations = {
         th_qty: 'الكمية المهدرة',
         th_reason: 'السبب',
         th_branch: 'الفرع',
+        welcome_banner: 'أهلاً بك، ✨🌙',
+        ramadan_wish: 'نتمنى لك رمضان مبارك',
+        general_tab: 'عام',
+        branches_tab: 'الفروع',
+        kitchen_tab: 'المطبخ',
+        orders_label: 'الطلبات',
+        net_sales_label: 'صافي المبيعات',
+        net_payments_label: 'صافي المدفوعات',
+        return_amount_label: 'مبلغ المرتجعات',
+        discount_amount_label: 'مبلغ الخصم',
+        view_report: 'عرض التقرير',
+        order_types: 'أنواع الطلبات',
+        hourly_sales: 'المبيعات الساعية',
+        top_products: 'أفضل المنتجات حسب صافي المبيعات (ر.س)',
+        top_payments: 'أفضل طرق الدفع (ر.س)',
+        top_branches: 'أفضل الفروع حسب صافي المبيعات (ر.س)'
     }
 };
 
@@ -193,6 +225,24 @@ function handleLogout() {
     supabaseClient.auth.signOut();
     document.getElementById('auth-overlay').classList.add('active');
     toggleAuthMode('login');
+}
+
+// ============================================================
+// INVENTORY & USER LOGIC
+// ============================================================
+function submitAddItem() {
+    alert('Inventory item added successfully!');
+    closeModal('add-item-modal');
+}
+
+function submitStockTransfer() {
+    alert('Stock transfer completed successfully!');
+    closeModal('stock-transfer-modal');
+}
+
+function submitUser() {
+    alert('User settings and permissions saved successfully!');
+    closeModal('user-modal');
 }
 
 // ============================================================
@@ -390,92 +440,103 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Chart.js Implementations ---
-    let purchasesChartObj = null;
-    let salesChartObj = null;
-    let inventoryChartObj = null;
-
     function renderCharts() {
-        const primaryColor = '#FFFFFF';
-        const infoColor = '#888888';
-        const successColor = '#2ECC71';
+        const accentColor = '#5D3FD3';
         const textColor = '#888888';
         const gridColor = '#222222';
 
-        const chartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { labels: { color: textColor } }
-            },
+        const miniOptions = {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { display: false }, y: { display: false } },
+            elements: { point: { radius: 0 }, line: { tension: 0.4, borderWidth: 2, borderColor: accentColor } }
+        };
+
+        const barOptions = {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
             scales: {
-                x: { ticks: { color: textColor }, grid: { color: gridColor } },
+                x: { ticks: { color: textColor }, grid: { display: false } },
                 y: { ticks: { color: textColor }, grid: { color: gridColor } }
             }
         };
 
-        // 1. Purchases Chart (Bar)
-        if (purchasesChartObj) purchasesChartObj.destroy();
-        const ctxPurchases = document.getElementById('purchasesChart').getContext('2d');
-        purchasesChartObj = new Chart(ctxPurchases, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Purchases (SAR)',
-                    data: [12000, 15000, 11000, 18000, 22000, 16000],
-                    backgroundColor: infoColor,
-                    borderRadius: 4
-                }]
-            },
-            options: chartOptions
-        });
+        const pieOptions = {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { color: textColor, boxWidth: 12, usePointStyle: true } } }
+        };
 
-        // 2. Top Sales / Production Chart (Doughnut)
-        if (salesChartObj) salesChartObj.destroy();
-        const ctxSales = document.getElementById('salesChart').getContext('2d');
-        salesChartObj = new Chart(ctxSales, {
-            type: 'doughnut',
-            data: {
-                labels: ['Chicken Shawarma', 'Keto Box', 'Fresh Juice', 'Mashed Potato'],
-                datasets: [{
-                    data: [45, 25, 20, 10],
-                    backgroundColor: ['#FFFFFF', '#AAAAAA', '#555555', '#333333'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { position: 'right', labels: { color: textColor } } }
+        // Mini Charts
+        const miniCtxs = ['miniChartOrders', 'miniChartSales', 'miniChartPayments', 'miniChartReturns', 'miniChartDiscounts'];
+        miniCtxs.forEach(id => {
+            const ctx = document.getElementById(id);
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        datasets: [{ data: Array.from({ length: 10 }, () => Math.floor(Math.random() * 50)) }]
+                    },
+                    options: miniOptions
+                });
             }
         });
 
-        // 3. Inventory Chart (Line)
-        if (inventoryChartObj) inventoryChartObj.destroy();
-        const ctxInv = document.getElementById('inventoryChart').getContext('2d');
-        inventoryChartObj = new Chart(ctxInv, {
-            type: 'line',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                datasets: [
-                    {
-                        label: 'Meat Usage',
-                        data: [50, 60, 45, 80],
-                        borderColor: primaryColor,
-                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                        fill: true,
-                        tension: 0.4
+        // Large Order Types Chart
+        const ctxOrderTypes = document.getElementById('orderTypesChart');
+        if (ctxOrderTypes) {
+            new Chart(ctxOrderTypes, {
+                type: 'line',
+                data: {
+                    labels: ['12 AM', '3 AM', '6 AM', '9 AM', '12 PM', '3 PM', '6 PM', '9 PM', '11 PM'],
+                    datasets: [
+                        { label: 'Delivery', data: [5, 10, 5, 20, 45, 30, 60, 40, 20], borderColor: '#1F3A93', fill: false },
+                        { label: 'Dine-in', data: [2, 5, 2, 15, 30, 20, 50, 30, 15], borderColor: '#E67E22', fill: false },
+                        { label: 'Pickup', data: [3, 8, 3, 10, 25, 15, 40, 25, 10], borderColor: '#5D3FD3', fill: false }
+                    ]
+                },
+                options: { ...barOptions, plugins: { legend: { display: true, labels: { color: textColor } } } }
+            });
+        }
+
+        // Hourly Sales Chart
+        const ctxHourly = document.getElementById('hourlySalesChart');
+        if (ctxHourly) {
+            new Chart(ctxHourly, {
+                type: 'bar',
+                data: {
+                    labels: ['11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM', '9 PM', '10 PM'],
+                    datasets: [{
+                        data: [0, 0, 0, 0, 0, 120, 420, 0, 0, 180, 80, 0],
+                        backgroundColor: accentColor,
+                        borderRadius: 5
+                    }]
+                },
+                options: barOptions
+            });
+        }
+
+        // Pie Charts
+        const pieCtxs = {
+            'productsPieChart': { labels: ['Shawarma', 'Burger', 'Salad', 'Juice'], data: [45, 25, 20, 10] },
+            'paymentsPieChart': { labels: ['Cash', 'Mada', 'Visa', 'Apple Pay'], data: [30, 40, 20, 10] },
+            'branchesPieChart': { labels: ['Main', 'Jeddah', 'Dammam'], data: [60, 25, 15] }
+        };
+
+        const colors = ['#002147', '#E67E22', '#5D3FD3', '#89CFF0', '#2ECC71'];
+
+        Object.keys(pieCtxs).forEach(id => {
+            const ctx = document.getElementById(id);
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: pieCtxs[id].labels,
+                        datasets: [{ data: pieCtxs[id].data, backgroundColor: colors, borderWidth: 0 }]
                     },
-                    {
-                        label: 'Vegetables',
-                        data: [30, 40, 35, 50],
-                        borderColor: successColor,
-                        backgroundColor: 'rgba(46, 204, 113, 0.05)',
-                        fill: true,
-                        tension: 0.4
-                    }
-                ]
-            },
-            options: chartOptions
+                    options: pieOptions
+                });
+            }
         });
     }
 
@@ -546,3 +607,6 @@ window.submitProduction = submitProduction;
 window.submitRecipe = submitRecipe;
 window.toggleTheme = toggleTheme;
 window.applyLanguage = applyLanguage;
+window.submitAddItem = submitAddItem;
+window.submitStockTransfer = submitStockTransfer;
+window.submitUser = submitUser;

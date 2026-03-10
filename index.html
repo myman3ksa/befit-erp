@@ -82,71 +82,141 @@
         <div class="pages-container">
             <!-- 1. Dashboard Section -->
             <section id="dashboard-section" class="page-section active">
-                <div class="section-header">
-                    <h2>Overview Dashboard</h2>
-                    <div class="filters">
-                        <select title="Branch Filter" class="dashboard-branch-select">
-                            <option value="all">All Branches</option>
-                            <option value="main">Main Branch (Riyadh)</option>
-                            <option value="jeddah">Jeddah Branch</option>
-                            <option value="dammam">Dammam Cloud Kitchen</option>
-                        </select>
-                        <select title="Time Filter" id="dashboard-time-filter" class="dashboard-time-select">
-                            <option value="daily">Daily View</option>
-                            <option value="weekly">Weekly View</option>
-                            <option value="monthly">Monthly View</option>
-                        </select>
-                        <input type="date" title="Select Date" id="dashboard-date-picker">
+                <div class="dashboard-banner">
+                    <div class="banner-content">
+                        <h1>Welcome, ✨🌙</h1>
+                        <p>Wishing you a blessed Ramadan</p>
                     </div>
                 </div>
 
-                <div class="comparison-row">
-                    <div class="comp-badge up"><i class='bx bx-trending-up'></i> +12% vs last week</div>
+                <div class="dashboard-tabs">
+                    <button class="dash-tab active">General</button>
+                    <button class="dash-tab">Branches</button>
+                    <button class="dash-tab">Kitchen <span class="badge-new">New</span></button>
                 </div>
 
-                <div class="kpi-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-icon purchases"><i class='bx bx-cart'></i></div>
-                        <div class="kpi-info">
-                            <h3>Total Purchases</h3>
-                            <p>124,500 <span class="currency">SAR</span></p>
+                <div class="dashboard-controls-row">
+                    <div class="toggle-group">
+                        <button class="toggle-btn active">day</button>
+                        <button class="toggle-btn">week</button>
+                        <button class="toggle-btn">month</button>
+                    </div>
+                    <div class="date-picker-wrapper">
+                        <input type="date" id="dash-main-date" value="2025-02-10">
+                    </div>
+                    <div class="compare-control">
+                        <span>Compare</span>
+                        <label class="switch small">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <button class="icon-filter-btn"><i class='bx bx-filter-alt'></i></button>
+                </div>
+
+                <div class="mini-kpi-grid">
+                    <div class="kpi-mini-card">
+                        <div class="card-header">
+                            <span>Orders</span>
+                            <a href="#" class="view-report">View Report</a>
+                        </div>
+                        <div class="card-body">
+                            <h2>11</h2>
+                            <div class="mini-chart-container">
+                                <canvas id="miniChartOrders"></canvas>
+                            </div>
                         </div>
                     </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon pending"><i class='bx bx-time-five'></i></div>
-                        <div class="kpi-info">
-                            <h3>Pending Approvals</h3>
-                            <p>12 <span class="subtitle">Orders</span></p>
+                    <div class="kpi-mini-card">
+                        <div class="card-header">
+                            <span>Net Sales</span>
+                            <a href="#" class="view-report">View Report</a>
+                        </div>
+                        <div class="card-body">
+                            <h2><i class='bx bx-star'></i> 667.83</h2>
+                            <div class="mini-chart-container">
+                                <canvas id="miniChartSales"></canvas>
+                            </div>
                         </div>
                     </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon inv"><i class='bx bx-box'></i></div>
-                        <div class="kpi-info">
-                            <h3>Current Stock Value</h3>
-                            <p>342,000 <span class="currency">SAR</span></p>
+                    <div class="kpi-mini-card">
+                        <div class="card-header">
+                            <span>Net Payments</span>
+                            <a href="#" class="view-report">View Report</a>
+                        </div>
+                        <div class="card-body">
+                            <h2><i class='bx bx-star'></i> 768</h2>
+                            <div class="mini-chart-container">
+                                <canvas id="miniChartPayments"></canvas>
+                            </div>
                         </div>
                     </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon prod"><i class='bx bx-restaurant'></i></div>
-                        <div class="kpi-info">
-                            <h3>Daily Production</h3>
-                            <p>2,140 <span class="subtitle">Meals</span></p>
+                    <div class="kpi-mini-card">
+                        <div class="card-header">
+                            <span>Return Amount</span>
+                            <a href="#" class="view-report">View Report</a>
+                        </div>
+                        <div class="card-body">
+                            <h2><i class='bx bx-star'></i> 0</h2>
+                            <div class="mini-chart-container">
+                                <canvas id="miniChartReturns"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-mini-card">
+                        <div class="card-header">
+                            <span>Discount Amount</span>
+                            <a href="#" class="view-report">View Report</a>
+                        </div>
+                        <div class="card-body">
+                            <h2><i class='bx bx-star'></i> 0</h2>
+                            <div class="mini-chart-container">
+                                <canvas id="miniChartDiscounts"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="charts-grid">
-                    <div class="chart-container custom-panel">
-                        <h3>Purchases per Month</h3>
-                        <canvas id="purchasesChart"></canvas>
+                <div class="large-chart-card custom-panel">
+                    <div class="card-header">
+                        <span>Order types</span>
+                        <a href="#" class="view-report">View Report</a>
                     </div>
-                    <div class="chart-container custom-panel">
-                        <h3>Top Selling Items</h3>
-                        <canvas id="salesChart"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="orderTypesChart"></canvas>
                     </div>
-                    <div class="chart-container custom-panel full-width">
-                        <h3>Inventory Usage Trends</h3>
-                        <canvas id="inventoryChart"></canvas>
+                </div>
+
+                <div class="hourly-sales-card custom-panel">
+                    <div class="card-header">
+                        <span>Hourly Sales</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="hourlySalesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="pie-charts-grid">
+                    <div class="pie-card custom-panel">
+                        <div class="card-header">
+                            <span>Top Products by Net Sales (SAR)</span>
+                            <a href="#" class="view-report">View Report</a>
+                        </div>
+                        <canvas id="productsPieChart"></canvas>
+                    </div>
+                    <div class="pie-card custom-panel">
+                        <div class="card-header">
+                            <span>Top Payments (SAR)</span>
+                            <a href="#" class="view-report">View Report</a>
+                        </div>
+                        <canvas id="paymentsPieChart"></canvas>
+                    </div>
+                    <div class="pie-card custom-panel">
+                        <div class="card-header">
+                            <span>Top Branches by Net Sales (SAR)</span>
+                            <a href="#" class="view-report">View Report</a>
+                        </div>
+                        <canvas id="branchesPieChart"></canvas>
                     </div>
                 </div>
             </section>
@@ -270,7 +340,8 @@
                 <div class="section-header">
                     <h2>Inventory Management</h2>
                     <div class="header-buttons">
-                        <button class="primary-btn"><i class='bx bx-transfer'></i> Stock Transfer</button>
+                        <button class="primary-btn" onclick="openModal('add-item-modal')"><i class='bx bx-plus'></i> Add Item</button>
+                        <button class="secondary-btn" onclick="openModal('stock-transfer-modal')"><i class='bx bx-transfer'></i> Stock Transfer</button>
                         <button class="secondary-btn"><i class='bx bx-cloud-download'></i> Export</button>
                     </div>
                 </div>
@@ -889,11 +960,22 @@
                             </select>
                         </div>
                     </div>
+                    <div class="access-settings">
+                        <h4>User Access Settings</h4>
+                        <div class="permissions-grid">
+                            <label class="check-item"><input type="checkbox" checked> Purchasing</label>
+                            <label class="check-item"><input type="checkbox" checked> Inventory</label>
+                            <label class="check-item"><input type="checkbox" checked> Production</label>
+                            <label class="check-item"><input type="checkbox" checked> Costing</label>
+                            <label class="check-item"><input type="checkbox" checked> Branches</label>
+                            <label class="check-item"><input type="checkbox" checked> Users Control</label>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="secondary-btn" onclick="closeModal('user-modal')">Cancel</button>
-                <button class="primary-btn">Save User</button>
+                <button class="primary-btn" onclick="submitUser()">Save User</button>
             </div>
         </div>
     </div>
@@ -1086,6 +1168,79 @@
             <div class="modal-footer">
                 <button class="secondary-btn" onclick="closeModal('recipe-modal')">Cancel</button>
                 <button class="primary-btn" onclick="submitRecipe()">Create Recipe</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Item -->
+    <div id="add-item-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Inventory Item</h2>
+                <span class="close-modal" onclick="closeModal('add-item-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="add-item-form">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Item Name</label>
+                            <input type="text" placeholder="e.g. Tomato">
+                        </div>
+                        <div class="input-group">
+                            <label>Category</label>
+                            <select>
+                                <option>Vegetables</option>
+                                <option>Meat</option>
+                                <option>Dairy</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal('add-item-modal')">Cancel</button>
+                <button class="primary-btn" onclick="submitAddItem()">Save Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Stock Transfer -->
+    <div id="stock-transfer-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Stock Transfer</h2>
+                <span class="close-modal" onclick="closeModal('stock-transfer-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="transfer-form">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>From Branch</label>
+                            <select>
+                                <option>Main Warehouse</option>
+                                <option>Jeddah Branch</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>To Branch</label>
+                            <select>
+                                <option>Riyadh Branch</option>
+                                <option>Jeddah Branch</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Item</label>
+                        <select>
+                            <option>Chicken Breast</option>
+                            <option>Basmati Rice</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal('stock-transfer-modal')">Cancel</button>
+                <button class="primary-btn" onclick="submitStockTransfer()">Complete Transfer</button>
             </div>
         </div>
     </div>

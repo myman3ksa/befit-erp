@@ -1235,6 +1235,244 @@ body.rtl .modal-footer {
     font-size: 12px;
 }
 
+/* Dashboard New Layout */
+.dashboard-banner {
+    background: linear-gradient(135deg, #4B2A8A 0%, #2D1B5E 100%);
+    border-radius: 12px;
+    padding: 30px 40px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+
+.dashboard-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png');
+    opacity: 0.1;
+}
+
+.banner-content h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.banner-content p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+}
+
+.dashboard-tabs {
+    display: flex;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 25px;
+    padding-bottom: 5px;
+}
+
+.dash-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 5px;
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition);
+}
+
+.dash-tab.active {
+    color: var(--primary);
+}
+
+.dash-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.badge-new {
+    background: #2ECC71;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.dashboard-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.toggle-group {
+    display: flex;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.toggle-btn.active {
+    background: #5D3FD3;
+    color: white;
+}
+
+.date-picker-wrapper input {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.compare-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.icon-filter-btn {
+    margin-left: auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Mini KPI Grid */
+.mini-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.kpi-mini-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.kpi-mini-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.view-report {
+    color: #5D3FD3;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+.kpi-mini-card h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.kpi-mini-card h2 i {
+    font-size: 18px;
+}
+
+.mini-chart-container {
+    height: 40px;
+}
+
+/* Large Charts */
+.large-chart-card, .hourly-sales-card {
+    margin-bottom: 30px;
+}
+
+.chart-wrapper {
+    height: 300px;
+}
+
+.pie-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.pie-card canvas {
+    max-height: 250px;
+}
+
+/* User Permissions */
+.access-settings {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.access-settings h4 {
+    margin-bottom: 15px;
+}
+
+.permissions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.check-item input {
+    accent-color: var(--success);
+}
+
+@media (max-width: 1200px) {
+    .mini-kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    .pie-charts-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .mini-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 992px) {
     .settings-grid {
         grid-template-columns: 1fr;

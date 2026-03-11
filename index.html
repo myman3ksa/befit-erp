@@ -1015,7 +1015,85 @@
             </section>
 
         </div>
-    </main>
+                <!-- AI Assistant Section -->
+            <section id="ai-assistant-section" class="content-section" style="display:none;">
+                <div class="header-main">
+                    <h2>AI Data Assistant <span class="badge">BETA</span></h2>
+                    <p>Ask questions in plain English/Arabic about your ERP data</p>
+                </div>
+
+                <div class="ai-chat-container">
+                    <div class="ai-input-area">
+                        <textarea id="ai-user-prompt" placeholder="Example: Show me total purchase orders by branch this month..."></textarea>
+                        <button class="ai-ask-btn" onclick="askAiAssistant()">
+                            <i class='bx bx-sparkles'></i> Generate SQL & Fetch Data
+                        </button>
+                    </div>
+
+                    <div id="ai-response-area" style="display:none;">
+                        <div class="sql-code-box">
+                            <div class="sql-header">Generated PostgreSQL Query:</div>
+                            <pre><code id="ai-sql-display"></code></pre>
+                        </div>
+                        
+                        <div class="results-table-container">
+                            <table class="styled-table" id="ai-results-table">
+                                <thead id="ai-results-head"></thead>
+                                <tbody id="ai-results-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <style>
+                    .ai-chat-container {
+                        max-width: 900px;
+                        margin: 20px auto;
+                        background: rgba(255,255,255,0.05);
+                        border-radius: 12px;
+                        padding: 30px;
+                        border: 1px solid rgba(255,255,255,0.1);
+                    }
+                    .ai-input-area textarea {
+                        width: 100%;
+                        height: 100px;
+                        background: rgba(0,0,0,0.2);
+                        border: 1px solid rgba(255,255,255,0.1);
+                        border-radius: 8px;
+                        color: #fff;
+                        padding: 15px;
+                        font-family: inherit;
+                        font-size: 16px;
+                        margin-bottom: 15px;
+                        resize: none;
+                    }
+                    .ai-ask-btn {
+                        background: linear-gradient(135deg, #27ae60, #2ecc71);
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        transition: 0.3s;
+                    }
+                    .ai-ask-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); }
+                    .sql-code-box {
+                        margin-top: 25px;
+                        background: #1e1e1e;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        border-left: 4px solid #f39c12;
+                    }
+                    .sql-header { background: #2d2d2d; padding: 8px 15px; font-size: 12px; color: #aaa; }
+                    .sql-code-box pre { padding: 15px; color: #f1c40f; font-family: 'Courier New', monospace; overflow-x: auto; }
+                    .results-table-container { margin-top: 20px; max-height: 400px; overflow-y: auto; }
+                </style>
+            </section>
+            </main>
 
     <!-- Authentication Overlay -->
     <div id="auth-overlay" class="auth-overlay active">

@@ -1,9 +1,9 @@
-﻿// ============================================================
+// ============================================================
 // SUPABASE CLIENT
 // ============================================================
 const { createClient } = supabase;
 const SUPABASE_URL = 'https://dmkderzdipkzgitidnzy.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_kDN7Xyf9FWwfQI5skcwR_w_jhR5eu9m';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRta2RlcnpkaXBremdpdGlkbnp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5ODMzMTEsImV4cCI6MjA4ODU1OTMxMX0.5lcOpcwG6op3El3Sa0hRecvjFmV2KTdgiJ2XA2-Ebd0';
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ============================================================
@@ -1242,13 +1242,13 @@ function renderAiResults(data) {
     // Header
     const keys = Object.keys(data[0]);
     const hr = document.createElement('tr');
-    keys.forEach(k => hr.innerHTML += <th>\</th>);
+    keys.forEach(k => hr.innerHTML += `<th>${k.toUpperCase()}</th>`);
     head.appendChild(hr);
 
     // Rows
     data.forEach(row => {
         const tr = document.createElement('tr');
-        keys.forEach(k => tr.innerHTML += <td>\</td>);
+        keys.forEach(k => tr.innerHTML += `<td>${row[k]}</td>`);
         body.appendChild(tr);
     });
 }

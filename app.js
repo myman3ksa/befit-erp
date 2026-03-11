@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // SUPABASE CLIENT
 // ============================================================
 const { createClient } = supabase;
@@ -1252,3 +1252,15 @@ function renderAiResults(data) {
         body.appendChild(tr);
     });
 }
+// Global Exports for HTML onclick events
+window.submitBranch = submitBranch;
+window.submitAddItem = submitAddItem;
+window.submitStockTransfer = submitStockTransfer;
+window.submitUser = submitUser;
+window.submitProduction = submitProduction;
+window.submitRecipe = submitRecipe;
+window.submitWastage = submitWastage;
+window.addProdIngredient = addProdIngredient;
+window.calculateYieldProd = calculateYieldProd;
+window.addRecipeIngredient = addRecipeIngredient;
+window.deleteBranch = deleteBranch;

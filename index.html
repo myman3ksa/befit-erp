@@ -40,11 +40,12 @@
             <li data-target="users-section"><i class='bx bx-user'></i><span data-lang="menu_users">Users</span></li>
             <li data-target="wastage-section"><i class='bx bx-trash'></i><span data-lang="menu_wastage">Wastage</span></li>
             <li data-target="settings-section"><i class='bx bx-cog'></i><span data-lang="menu_settings">Settings</span></li>
+            <li data-target="ai-assistant-section"><i class='bx bx-bot'></i><span>AI Assistant</span></li>
         </ul>
         <div class="bottom-menu">
             <ul>
                 <li><i class='bx bx-log-out'></i><span>Logout</span></li>
-            </ul>
+        </ul>
         </div>
     </nav>
 
@@ -556,7 +557,7 @@
             <section id="admin-section" class="page-section">
                 <div class="section-header">
                     <h2>Branch Administration</h2>
-                    <button class="primary-btn"><i class='bx bx-plus'></i> Add Branch</button>
+                    <button class="primary-btn" onclick="openModal('edit-branch-modal')"><i class='bx bx-plus'></i> Add Branch</button>
                 </div>
 
                 <div class="kpi-grid">
@@ -1016,7 +1017,7 @@
 
         </div>
                 <!-- AI Assistant Section -->
-            <section id="ai-assistant-section" class="content-section" style="display:none;">
+            <section id="ai-assistant-section" class="page-section" style="display:none;">
                 <div class="header-main">
                     <h2>AI Data Assistant <span class="badge">BETA</span></h2>
                     <p>Ask questions in plain English/Arabic about your ERP data</p>

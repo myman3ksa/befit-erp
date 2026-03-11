@@ -101,7 +101,7 @@ async function loadBranches() {
     if (!data) return;
     
     // Update Tables
-    const tbody = document.querySelector('#admin-section tbody');
+    const tbody = document.getElementById('admin-table-body');
     if (tbody) {
         if (data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="8" style="text-align: center;">No branches found in database.</td></tr>`;
@@ -142,7 +142,7 @@ async function loadInventoryItems() {
         return;
     }
     
-    const tbody = document.querySelector('#inventory-section tbody');
+    const tbody = document.getElementById('inventory-table-body');
     if (tbody) {
         if (!items || items.length === 0) {
             tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">No inventory items found in database.</td></tr>`;
@@ -201,7 +201,7 @@ async function loadPurchaseOrders(filter = 'all') {
     if (!data) return;
 
     // Update Tables
-    const tbody = document.querySelector('#purchasing-section tbody');
+    const tbody = document.getElementById('purchasing-table-body');
     if (tbody) {
         if (data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">No purchase orders found.</td></tr>`;

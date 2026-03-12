@@ -1602,3 +1602,52 @@ body.rtl .modal-footer {
 .po-item-row .item-total { flex: 0 0 120px; text-align: right; font-weight: 600; color: var(--primary-color); }
 .po-item-row .delete-item { cursor: pointer; color: #e74c3c; font-size: 20px; }
 
+/* Dash KPI Section */
+.dash-kpi-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.dash-section-title {
+    margin-bottom: 20px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dash-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.dash-kpi-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.dash-kpi-card:hover {
+    transform: translateY(-5px);
+    border-color: #5D3FD3;
+}
+
+.dk-loading {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.mini-chart-container {
+    height: 40px;
+    width: 100%;
+}
+

@@ -28,22 +28,22 @@
             </div>
         </div>
         <ul class="nav-links">
-            <li class="active" data-target="dashboard-section"><i class='bx bx-grid-alt'></i><span>Dashboard</span></li>
-            <li data-target="purchasing-section"><i class='bx bx-cart-alt'></i><span>Purchasing</span></li>
-            <li data-target="inventory-section"><i class='bx bx-package'></i><span>Inventory</span></li>
-            <li data-target="production-section"><i class='bx bx-dish'></i><span>Production</span></li>
-            <li data-target="costing-section"><i class='bx bx-line-chart'></i><span>Costing</span></li>
-            <li data-target="admin-section"><i class='bx bx-buildings'></i><span data-lang="menu_branches">Branches</span></li>
-            <li data-target="suppliers-section"><i class='bx bx-store'></i><span>Suppliers</span></li>
-            <li data-target="finance-section"><i class='bx bx-money'></i><span data-lang="menu_finance">Finance</span></li>
-            <li data-target="users-section"><i class='bx bx-user'></i><span data-lang="menu_users">Users</span></li>
-            <li data-target="wastage-section"><i class='bx bx-trash'></i><span data-lang="menu_wastage">Wastage</span></li>
-            <li data-target="settings-section"><i class='bx bx-cog'></i><span data-lang="menu_settings">Settings</span></li>
-            <li data-target="ai-assistant-section"><i class='bx bx-bot'></i><span>AI Assistant</span></li>
+            <li class="active" data-target="dashboard-section" onclick="navigateTo('dashboard-section')"><i class='bx bx-grid-alt'></i><span>Dashboard</span></li>
+            <li data-target="purchasing-section" onclick="navigateTo('purchasing-section')"><i class='bx bx-cart-alt'></i><span>Purchasing</span></li>
+            <li data-target="inventory-section" onclick="navigateTo('inventory-section')"><i class='bx bx-package'></i><span>Inventory</span></li>
+            <li data-target="production-section" onclick="navigateTo('production-section')"><i class='bx bx-dish'></i><span>Production</span></li>
+            <li data-target="costing-section" onclick="navigateTo('costing-section')"><i class='bx bx-line-chart'></i><span>Costing</span></li>
+            <li data-target="admin-section" onclick="navigateTo('admin-section')"><i class='bx bx-buildings'></i><span data-lang="menu_branches">Branches</span></li>
+            <li data-target="suppliers-section" onclick="navigateTo('suppliers-section')"><i class='bx bx-store'></i><span>Suppliers</span></li>
+            <li data-target="finance-section" onclick="navigateTo('finance-section')"><i class='bx bx-money'></i><span data-lang="menu_finance">Finance</span></li>
+            <li data-target="users-section" onclick="navigateTo('users-section')"><i class='bx bx-user'></i><span data-lang="menu_users">Users</span></li>
+            <li data-target="wastage-section" onclick="navigateTo('wastage-section')"><i class='bx bx-trash'></i><span data-lang="menu_wastage">Wastage</span></li>
+            <li data-target="settings-section" onclick="navigateTo('settings-section')"><i class='bx bx-cog'></i><span data-lang="menu_settings">Settings</span></li>
+            <li data-target="ai-assistant-section" onclick="navigateTo('ai-assistant-section')"><i class='bx bx-bot'></i><span>AI Assistant</span></li>
         </ul>
         <div class="bottom-menu">
             <ul>
-                <li><i class='bx bx-log-out'></i><span>Logout</span></li>
+                <li onclick="location.reload()"><i class='bx bx-log-out'></i><span>Logout</span></li>
             </ul>
         </div>
     </nav>
@@ -79,112 +79,71 @@
             <section id="dashboard-section" class="page-section active">
                 <div class="dashboard-banner">
                     <div class="banner-content">
-                        <h1><span data-lang="welcome_user">Welcome</span>, <span id="display-user-name">User</span></h1>
-                        <p data-lang="system_ready">System is ready for operations</p>
+                        <h1>Welcome, <span id="display-user-name">User</span></h1>
+                        <p id="dash-date-label">Live operational overview</p>
                     </div>
-                </div>
-
-                <div class="dashboard-tabs">
-                    <button class="dash-tab active" data-lang="general_tab">General</button>
-                    <button class="dash-tab" data-lang="branches_tab">Branches</button>
-                    <button class="dash-tab" data-lang="kitchen_tab">Kitchen</button>
-                </div>
-
-                <div class="dashboard-controls-row">
-                    <div class="toggle-group">
-                        <button class="toggle-btn active">day</button>
-                        <button class="toggle-btn">week</button>
-                        <button class="toggle-btn">month</button>
+                    <div class="banner-actions">
+                        <button class="export-btn-mini" onclick="exportData('pdf')"><i class='bx bx-file-pdf'></i> PDF</button>
+                        <button class="export-btn-mini" onclick="exportData('xls')"><i class='bx bx-spreadsheet'></i> XLS</button>
                     </div>
-                    <div class="date-picker-wrapper">
-                        <input type="date" id="dash-main-date" value="2025-02-10">
-                    </div>
-                    <div class="compare-control">
-                        <span data-lang="compare_label">Compare</span>
-                        <label class="switch small">
-                            <input type="checkbox" id="dash-compare-toggle">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="export-actions">
-                        <button class="export-btn-mini" onclick="exportData('pdf')">PDF</button>
-                        <button class="export-btn-mini" onclick="exportData('xls')">XLS</button>
-                    </div>
-                    <button class="icon-filter-btn"><i class='bx bx-filter-alt'></i></button>
                 </div>
 
                 <div class="mini-kpi-grid">
                     <div class="kpi-mini-card">
-                        <div class="card-header">
-                            <span data-lang="po_label">P.O.</span>
-                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
-                        </div>
-                        <div class="card-body">
-                            <h2 id="kpi-po-count">0</h2>
-                            <div class="mini-chart-container"><canvas id="miniChartPO"></canvas></div>
-                        </div>
+                        <div class="card-header"><span>Purchase Orders</span><a href="#purchasing-section" class="view-report" onclick="navigateTo('purchasing-section')">View All →</a></div>
+                        <div class="card-body"><h2 id="kpi-po-count">—</h2><div class="mini-chart-container"><canvas id="miniChartPO"></canvas></div></div>
                     </div>
                     <div class="kpi-mini-card">
-                        <div class="card-header">
-                            <span data-lang="branch_orders_label">Branch Orders</span>
-                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
-                        </div>
-                        <div class="card-body">
-                            <h2><i class='bx bx-store-alt'></i> <span id="kpi-branch-orders">0.00</span></h2>
-                            <div class="mini-chart-container"><canvas id="miniChartBranchOrders"></canvas></div>
-                        </div>
+                        <div class="card-header"><span>Total Spend (Month)</span><a href="#purchasing-section" class="view-report" onclick="navigateTo('purchasing-section')">View All →</a></div>
+                        <div class="card-body"><h2><span id="kpi-branch-orders">—</span></h2><div class="mini-chart-container"><canvas id="miniChartBranchOrders"></canvas></div></div>
                     </div>
                     <div class="kpi-mini-card">
-                        <div class="card-header">
-                            <span data-lang="total_orders_label">Total Orders</span>
-                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
-                        </div>
-                        <div class="card-body">
-                            <h2><i class='bx bx-spreadsheet'></i> <span id="kpi-total-orders">0</span></h2>
-                            <div class="mini-chart-container"><canvas id="miniChartTotalOrders"></canvas></div>
-                        </div>
+                        <div class="card-header"><span>Portions Produced</span><a href="#production-section" class="view-report" onclick="navigateTo('production-section')">View All →</a></div>
+                        <div class="card-body"><h2><span id="kpi-total-orders">—</span></h2><div class="mini-chart-container"><canvas id="miniChartTotalOrders"></canvas></div></div>
                     </div>
                 </div>
 
-                <div class="large-chart-card custom-panel">
-                    <div class="card-header">
-                        <span data-lang="daily_usage_label">Daily Product Usage</span>
-                        <a href="#" class="view-report" data-lang="view_report">View Report</a>
-                    </div>
-                    <div class="chart-wrapper">
-                        <canvas id="dailyUsageChart"></canvas>
+                <!-- 12-card Full KPI Breakdown Grid -->
+                <div class="dash-kpi-section">
+                    <h3 class="dash-section-title"><i class='bx bx-bar-chart-alt-2'></i> Live Operations Breakdown</h3>
+                    <div class="dash-kpi-grid">
+                        <div class="dash-kpi-card" id="dash-kpi-1"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-2"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-3"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-4"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-5"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-6"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-7"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-8"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-9"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-10"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-11"><div class="dk-loading">Loading...</div></div>
+                        <div class="dash-kpi-card" id="dash-kpi-12"><div class="dk-loading">Loading...</div></div>
                     </div>
                 </div>
 
-                <div class="hourly-sales-card custom-panel">
-                    <div class="card-header">
-                        <span data-lang="hourly_po_label">Hourly P.O.</span>
+                <div class="charts-row">
+                    <div class="large-chart-card custom-panel">
+                        <div class="card-header"><span>Daily PO Spend — Last 7 Days (SAR)</span><a href="#" class="view-report">Live Data</a></div>
+                        <div class="chart-wrapper"><canvas id="dailyUsageChart"></canvas></div>
                     </div>
-                    <div class="chart-wrapper">
-                        <canvas id="hourlyPOChart"></canvas>
+                    <div class="hourly-sales-card custom-panel">
+                        <div class="card-header"><span>POs by Hour of Day</span></div>
+                        <div class="chart-wrapper"><canvas id="hourlyPOChart"></canvas></div>
                     </div>
                 </div>
 
                 <div class="pie-charts-grid">
                     <div class="pie-card custom-panel">
-                        <div class="card-header">
-                            <span data-lang="top_production_label">Top Production</span>
-                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
-                        </div>
+                        <div class="card-header"><span>Top Produced Items</span><a href="#production-section" class="view-report" onclick="navigateTo('production-section')">Details →</a></div>
                         <canvas id="productionPieChart"></canvas>
                     </div>
                     <div class="pie-card custom-panel">
-                        <div class="card-header">
-                            <span data-lang="top_wastage_label">Top Wastage</span>
-                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
-                        </div>
+                        <div class="card-header"><span>Top Wastage Items</span><a href="#wastage-section" class="view-report" onclick="navigateTo('wastage-section')">Details →</a></div>
                         <canvas id="wastagePieChart"></canvas>
                     </div>
                     <div class="pie-card custom-panel">
-                        <div class="card-header">
-                            <span data-lang="top_branches_production_label">Top Branches Production</span>
-                            <a href="#" class="view-report" data-lang="view_report">View Report</a>
-                        </div>
+                        <div class="card-header"><span>Production by Branch</span><a href="#admin-section" class="view-report" onclick="navigateTo('admin-section')">Details →</a></div>
                         <canvas id="branchesProductionPieChart"></canvas>
                     </div>
                 </div>
@@ -204,32 +163,32 @@
                 </div>
 
                 <div class="kpi-grid">
-                    <div class="kpi-card" id="po-kpi-total" onclick="filterPO('all')">
+                    <div class="kpi-card" id="po-kpi-total-card" onclick="filterPO('all')">
                         <div class="kpi-icon purchases"><i class='bx bx-file'></i></div>
                         <div class="kpi-info">
                             <h3>Total POs</h3>
-                            <p id="po-kpi-total-val">0 <span class="subtitle">This Month</span></p>
+                            <p id="po-kpi-total-val">— <span class="subtitle">This Month</span></p>
                         </div>
                     </div>
-                    <div class="kpi-card" id="po-kpi-pending" onclick="filterPO('pending')">
+                    <div class="kpi-card" id="po-kpi-pending-card" onclick="filterPO('pending')">
                         <div class="kpi-icon pending"><i class='bx bx-time-five'></i></div>
                         <div class="kpi-info">
                             <h3>Pending Approvals</h3>
-                            <p id="po-kpi-pending-val">0 <span class="subtitle">Orders</span></p>
+                            <p id="po-kpi-pending-val">— <span class="subtitle">Orders</span></p>
                         </div>
                     </div>
-                    <div class="kpi-card" id="po-kpi-spend">
+                    <div class="kpi-card" id="po-kpi-spend-card">
                         <div class="kpi-icon inv"><i class='bx bx-wallet'></i></div>
                         <div class="kpi-info">
                             <h3>Total Spend</h3>
-                            <p id="po-kpi-spend-val">0 <span class="currency">SAR</span></p>
+                            <p id="po-kpi-spend-val">— <span class="currency">SAR</span></p>
                         </div>
                     </div>
-                    <div class="kpi-card" id="po-kpi-suppliers">
+                    <div class="kpi-card" id="po-kpi-suppliers-card">
                         <div class="kpi-icon prod"><i class='bx bx-group'></i></div>
                         <div class="kpi-info">
                             <h3>Active Suppliers</h3>
-                            <p id="po-kpi-suppliers">0 <span class="subtitle">Vendors</span></p>
+                            <p id="po-kpi-suppliers">— <span class="subtitle">Vendors</span></p>
                         </div>
                     </div>
                 </div>
@@ -254,6 +213,8 @@
                                 <th>Date</th>
                                 <th>Branch</th>
                                 <th>Supplier</th>
+                                <th>Subtotal</th>
+                                <th>VAT (15%)</th>
                                 <th>Total (SAR)</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -278,7 +239,7 @@
                     <table class="styled-table">
                         <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Item Name</th>
                                 <th>Category</th>
                                 <th>Unit</th>
@@ -292,6 +253,22 @@
                 </div>
             </section>
 
+            <!-- 4. Production Section -->
+            <section id="production-section" class="page-section">
+                <div class="section-header">
+                    <h2>Daily Production</h2>
+                </div>
+                <!-- ... -->
+            </section>
+
+            <!-- 5. Costing Section -->
+            <section id="costing-section" class="page-section">
+                <div class="section-header">
+                    <h2>Recipe Costing Engine</h2>
+                </div>
+                <!-- ... -->
+            </section>
+
             <!-- 6. Branch Management Section -->
             <section id="admin-section" class="page-section">
                 <div class="section-header">
@@ -302,7 +279,7 @@
                     <table class="styled-table">
                         <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Branch Name</th>
                                 <th>Location</th>
                                 <th>Manager</th>
@@ -338,70 +315,63 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="suppliers-table-body">
-                        </tbody>
+                        <tbody id="suppliers-table-body"></tbody>
                     </table>
                 </div>
+            </section>
+
+            <!-- 8. Finance Section -->
+            <section id="finance-section" class="page-section">
+                <div class="section-header"><h2>Finance Department</h2></div>
+            </section>
+
+            <!-- 9. Users Management Section -->
+            <section id="users-section" class="page-section">
+                <div class="section-header"><h2>User Management</h2></div>
             </section>
 
             <!-- 10. Wastage Management Section -->
             <section id="wastage-section" class="page-section">
                 <div class="section-header">
-                    <h2 data-lang="wastage_title">Wastage Logging</h2>
+                    <h2>Wastage Logging</h2>
                     <button class="primary-btn" onclick="openModal('wastage-modal')"><i class='bx bx-plus'></i> Log Wastage</button>
                 </div>
                 <div class="custom-panel">
                     <table class="styled-table">
                         <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox" class="select-all-check" onclick="toggleAllCheckboxes(this)"></th>
                                 <th>Date</th>
                                 <th>Item</th>
                                 <th>Qty</th>
                                 <th>Reason</th>
                             </tr>
                         </thead>
-                        <tbody id="wastage-table-body">
-                        </tbody>
+                        <tbody id="wastage-table-body"></tbody>
                     </table>
                 </div>
+            </section>
+
+            <!-- 11. Settings Section -->
+            <section id="settings-section" class="page-section">
+                <div class="section-header"><h2>Settings</h2></div>
             </section>
 
             <!-- 12. AI Assistant Section -->
             <section id="ai-assistant-section" class="page-section">
                 <div class="section-header">
-                    <h2>AI Data Assistant</h2>
+                    <h2>AI Data Assistant <span class="badge">BETA</span></h2>
                 </div>
                 <div class="ai-chat-container">
                     <div class="ai-input-area">
                         <textarea id="ai-user-prompt" placeholder="Ask about your data..."></textarea>
-                        <button class="ai-ask-btn" onclick="askAiAssistant()">Generate SQL</button>
-                    </div>
-                    <div id="ai-response-area" style="display:none; padding-top:20px;">
-                        <pre><code id="ai-sql-display"></code></pre>
-                        <table class="styled-table" id="ai-results-table">
-                            <thead id="ai-results-head"></thead>
-                            <tbody id="ai-results-body"></tbody>
-                        </table>
+                        <button class="ai-ask-btn" onclick="askAiAssistant()">Generate SQL & Fetch Data</button>
                     </div>
                 </div>
             </section>
 
         </div><!-- /.pages-container -->
-
     </main>
-
-    <!-- Authentication Overlay -->
-    <div id="auth-overlay" class="auth-overlay">
-        <div class="auth-box">
-            <h2>Sign In</h2>
-            <form onsubmit="event.preventDefault(); handleAuthSubmit();">
-                <input type="email" id="auth-email" placeholder="Email" required>
-                <input type="password" id="auth-password" placeholder="Password" required>
-                <button type="submit" class="primary-btn">Sign In</button>
-            </form>
-        </div>
-    </div>
 
     <!-- Modals -->
     <div id="po-modal" class="modal">
@@ -442,6 +412,7 @@
     <!-- Other Modals placeholders -->
     <div id="add-supplier-modal" class="modal"><div class="modal-content"><h3>Add Supplier</h3><form onsubmit="event.preventDefault(); submitSupplier();"><input type="text" id="sup-name" placeholder="Name"><button type="submit">Save</button></form></div></div>
     <div id="edit-branch-modal" class="modal"><div class="modal-content"><h3>Add Branch</h3><form onsubmit="event.preventDefault(); submitBranch();"><input type="text" id="branch-name-val" placeholder="Name"><button type="submit">Save</button></form></div></div>
+    <div id="wastage-modal" class="modal"><div class="modal-content"><h3>Log Wastage</h3><form onsubmit="event.preventDefault(); submitWastage();"><input type="text" id="wastage-item" placeholder="Item"><input type="number" id="wastage-qty" value="1"><button type="submit">Log</button></form></div></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>

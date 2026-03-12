@@ -55,6 +55,19 @@ window.addEventListener('hashchange', () => {
 // ============================================================
 async function boot() {
     console.log("🚀 MAN-3 ERP Initializing...");
+    
+    // Check if logged in
+    if (!localStorage.getItem('man3_auth')) {
+        const auth = document.getElementById('auth-overlay');
+        if (auth) auth.classList.add('active');
+    } else {
+        const auth = document.getElementById('auth-overlay');
+        if (auth) auth.classList.remove('active');
+        completeBoot();
+    }
+}
+
+async function completeBoot() {
     await Promise.all([
         loadBranches(),
         loadInventoryItems(),
@@ -65,6 +78,21 @@ async function boot() {
     const saved = window.location.hash.substring(1) || localStorage.getItem('man3_page') || 'dashboard-section';
     navigateTo(document.getElementById(saved) ? saved : 'dashboard-section');
 }
+
+window.handleLogin = () => {
+    const user = document.getElementById('login-user').value;
+    const pass = document.getElementById('login-pass').value;
+
+    if (user && pass) {
+        localStorage.setItem('man3_auth', 'true');
+        const auth = document.getElementById('auth-overlay');
+        if (auth) auth.classList.remove('active');
+        toast("✅ Welcome back, " + user);
+        completeBoot();
+    } else {
+        alert("Enter credentials");
+    }
+};
 
 // ============================================================
 // DASHBOARD
@@ -293,6 +321,13 @@ async function loadInventoryItems() {
         const q = (i.inventory||[]).reduce((s,r)=>s+(parseFloat(r.quantity)||0),0);
         return q > 0 && q <= 10;
     }).length} <span class="subtitle">Alerts</span>`);
+
+    // Update item selects
+    const iSels = ['wa-item-select', 'prod-recipe-select'];
+    iSels.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '<option value="">Select Item</option>' + items.map(i=>`<option value="${i.id}">${i.name}</option>`).join('');
+    });
 }
 
 async function loadSuppliers() {
@@ -346,7 +381,7 @@ async function loadBranches() {
     setKPI('branch-kpi-total', `${data.length} <span class="subtitle">Locations</span>`);
     setKPI('branch-kpi-active', `${data.filter(b=>b.status==='active').length} <span class="subtitle">Operational</span>`);
 
-    const bSels = ['global-branch-select', 'po-branch', 'wastage-branch', 'prod-branch'];
+    const bSels = ['global-branch-select', 'po-branch', 'wastage-branch', 'prod-branch', 'wa-branch-select'];
     bSels.forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
@@ -430,6 +465,103 @@ window.submitPO = async () => {
     toast("✅ Purchase Order Created!");
     closeModal('po-modal');
     loadPurchaseOrders();
+    loadDashboard();
+};
+
+window.submitBranch = async () => {
+    const name = document.getElementById('branch-name-val').value;
+    const loc  = document.getElementById('branch-location-val').value;
+    const mgr  = document.getElementById('branch-manager-val').value;
+    const st   = document.getElementById('branch-status-val').value;
+
+    const { error } = await sb.from('branches').insert([{ 
+        name, location: loc, manager_name: mgr, status: st.toLowerCase() 
+    }]);
+
+    if (error) return alert(error.message);
+    toast("✅ Branch Added Successfully!");
+    closeModal('edit-branch-modal');
+    loadBranches();
+    loadDashboard();
+};
+
+window.submitSupplier = async () => {
+    const name = document.getElementById('sup-name').value;
+    const cat  = document.getElementById('sup-category').value;
+    const mob  = document.getElementById('sup-contact').value;
+    const bal  = document.getElementById('sup-balance').value;
+
+    const { error } = await sb.from('suppliers').insert([{ 
+        name, category: cat, phone: mob, opening_balance: bal 
+    }]);
+
+    if (error) return alert(error.message);
+    toast("✅ Supplier Registered!");
+    closeModal('add-supplier-modal');
+    loadSuppliers();
+    loadDashboard();
+};
+
+window.submitItem = async () => {
+    const name = document.getElementById('item-name').value;
+    const cat  = document.getElementById('item-category').value;
+    const unt  = document.getElementById('item-unit').value;
+    const cst  = document.getElementById('item-cost').value;
+    const crit = document.getElementById('item-critical').value;
+
+    const { error } = await sb.from('items').insert([{ 
+        name, category: cat, unit: unt, base_cost: cst, min_level: crit 
+    }]);
+
+    if (error) return alert(error.message);
+    toast("✅ Item Added to Catalog!");
+    closeModal('add-item-modal');
+    loadInventoryItems();
+    loadDashboard();
+};
+
+window.submitProduction = async () => {
+    const iid = document.getElementById('prod-recipe-select').value;
+    const qty = document.getElementById('prod-qty').value;
+    const bid = document.getElementById('prod-branch').value;
+
+    if (!iid || !bid) return alert("Select item and branch.");
+
+    const { error } = await sb.from('production_logs').insert([{ 
+        item_id: iid, quantity: qty, branch_id: bid 
+    }]);
+
+    if (error) return alert(error.message);
+    toast("✅ Production Batch Recorded!");
+    closeModal('production-modal');
+    loadDashboard();
+};
+
+window.submitWastage = async () => {
+    const iid = document.getElementById('wa-item-select').value;
+    const qty = document.getElementById('wa-qty').value;
+    const bid = document.getElementById('wa-branch-select').value;
+    const rea = document.getElementById('wa-reason-select').value;
+
+    if (!iid || !bid) return alert("Select item and branch.");
+
+    const { error } = await sb.from('wastage_logs').insert([{ 
+        item_id: iid, quantity: qty, branch_id: bid, reason: rea 
+    }]);
+
+    if (error) return alert(error.message);
+    toast("📉 Wastage Logged!");
+    closeModal('wastage-modal');
+    loadWastageLogs();
+    loadDashboard();
+};
+
+window.logout = () => {
+    localStorage.removeItem('man3_auth');
+    localStorage.removeItem('man3_page');
+    const auth = document.getElementById('auth-overlay');
+    if (auth) auth.classList.add('active');
+    toast("👋 Signed out successfully.");
 };
 
 // ============================================================
@@ -468,11 +600,11 @@ function appendChat(role, text) {
 function fmtNum(n) { return parseFloat(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 function setKPI(id, val) { const el = document.getElementById(id); if (el) el.innerHTML = val; }
 function toast(msg) {
-    const t = document.createElement('div');
-    t.style.cssText = `position:fixed; bottom:30px; right:30px; background:#2ecc71; color:#fff; padding:12px 25px; border-radius:10px; z-index:99999; box-shadow:0 10px 30px rgba(0,0,0,0.3); font-weight:500;`;
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.className = 'toast active';
     t.innerHTML = `<i class='bx bx-check-circle'></i> ${msg}`;
-    document.body.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 500); }, 3000);
+    setTimeout(() => { t.className = 'toast'; }, 3000);
 }
 
 window.toggleAllCheckboxes = cb => {

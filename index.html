@@ -43,7 +43,7 @@
         </ul>
         <div class="bottom-menu">
             <ul>
-                <li><i class='bx bx-log-out'></i><span>Logout</span></li>
+                <li id="logout-btn" onclick="logout()"><i class='bx bx-log-out'></i><span>Logout</span></li>
             </ul>
         </div>
     </nav>
@@ -1053,13 +1053,22 @@
             </div>
             <div class="modal-body">
                 <form onsubmit="event.preventDefault(); submitWastage();">
-                    <div class="input-group"><label>Waste Item</label><input type="text" id="wastage-item" placeholder="Select item..."></div>
-                    <div class="input-group"><label>Quantity</label><input type="number" id="wastage-qty" value="1"></div>
-                    <div class="input-group"><label>Branch</label><select id="wa-branch"><option>Main Branch</option></select></div>
-                    <div class="input-group"><label>Reason</label>
-                        <select id="wa-reason"><option>Expired</option><option>Damaged</option><option>Theft</option><option>Production Error</option></select>
+                    <div class="input-group"><label>Waste Item</label>
+                        <select id="wa-item-select" required><option value="">Select Item</option></select>
                     </div>
-                    <button class="primary-btn" type="submit" style="width:100%;">Record Loss</button>
+                    <div class="input-group"><label>Quantity</label><input type="number" id="wa-qty" value="1" required></div>
+                    <div class="input-group"><label>Branch</label>
+                        <select id="wa-branch-select" required><option value="">Select Branch</option></select>
+                    </div>
+                    <div class="input-group"><label>Reason</label>
+                        <select id="wa-reason-select">
+                            <option value="Expired">Expired</option>
+                            <option value="Damaged">Damaged</option>
+                            <option value="Theft">Theft</option>
+                            <option value="Production Error">Production Error</option>
+                        </select>
+                    </div>
+                    <button class="primary-btn" type="submit" style="width:100%; margin-top:10px;">Record Loss</button>
                 </form>
             </div>
         </div>
@@ -1070,10 +1079,19 @@
         <div class="modal-content">
             <div class="modal-header"><h2>Record Production Batch</h2><span class="close-modal" onclick="closeModal('production-modal')">&times;</span></div>
             <div class="modal-body">
-                <div class="input-group"><label>Recipe / Menu Item</label><select><option>Chicken Shawarma</option></select></div>
-                <div class="input-group"><label>Quantity Prepared (Portions)</label><input type="number" placeholder="0"></div>
+                <form onsubmit="event.preventDefault(); submitProduction();">
+                    <div class="input-group"><label>Recipe / Menu Item</label>
+                        <select id="prod-recipe-select"><option value="">Select Item</option></select>
+                    </div>
+                    <div class="input-group"><label>Quantity Prepared (Portions)</label>
+                        <input type="number" id="prod-qty" placeholder="0" required>
+                    </div>
+                    <div class="input-group"><label>Production Branch</label>
+                        <select id="prod-branch"><option value="">Select Branch</option></select>
+                    </div>
+                    <button class="primary-btn" type="submit" style="width:100%; margin-top:20px;">Update Stock & Log</button>
+                </form>
             </div>
-            <div class="modal-footer"><button class="primary-btn">Update Stock & Log</button></div>
         </div>
     </div>
 
@@ -1101,12 +1119,31 @@
                 <span class="close-modal" onclick="closeModal('add-item-modal')">&times;</span>
             </div>
             <div class="modal-body">
-                <div class="input-group"><label>Item Name</label><input type="text"></div>
-                <div class="input-group"><label>Category</label><select><option>Meat</option><option>Dry Store</option></select></div>
-                <div class="input-group"><label>Unit</label><select><option>Kg</option><option>Portion</option></select></div>
-                <div class="input-group"><label>Critical Stock Level</label><input type="number" placeholder="Notify when below X"></div>
+                <form onsubmit="event.preventDefault(); submitItem();">
+                    <div class="input-group"><label>Item Name</label><input type="text" id="item-name" required></div>
+                    <div class="input-group"><label>Category</label>
+                        <select id="item-category">
+                            <option value="Meat">Meat</option>
+                            <option value="Dry Store">Dry Store</option>
+                            <option value="Dairy">Dairy</option>
+                            <option value="Vegetables">Vegetables</option>
+                            <option value="Packaging">Packaging</option>
+                        </select>
+                    </div>
+                    <div class="input-group"><label>Unit</label>
+                        <select id="item-unit">
+                            <option value="Kg">Kg</option>
+                            <option value="Ltr">Ltr</option>
+                            <option value="Portion">Portion</option>
+                            <option value="PCS">PCS</option>
+                            <option value="Box">Box</option>
+                        </select>
+                    </div>
+                    <div class="input-group"><label>Base Cost (SAR)</label><input type="number" id="item-cost" value="0.00"></div>
+                    <div class="input-group"><label>Critical Stock Level</label><input type="number" id="item-critical" placeholder="Notify when below X"></div>
+                    <button class="primary-btn" type="submit" style="width:100%; margin-top:20px;">Sync SKU</button>
+                </form>
             </div>
-            <div class="modal-footer"><button class="primary-btn">Sync SKU</button></div>
         </div>
     </div>
 
@@ -1178,6 +1215,34 @@
                 <div class="input-group"><label>Reason</label><textarea placeholder="Justify urgency..."></textarea></div>
             </div>
             <div class="modal-footer"><button class="primary-btn" style="background:#e67e22;">Send to Finance</button></div>
+        </div>
+    </div>
+
+    <!-- Authentication Overlay -->
+    <div id="auth-overlay" class="auth-overlay active">
+        <canvas id="auth-canvas"></canvas>
+        <div class="auth-box">
+            <div class="auth-box-logo">
+                <i class='bx bx-lock-alt logo-icon'></i>
+                <h1>MAN-3 PLUS</h1>
+                <p>Restaurant Operations ERP</p>
+            </div>
+            <div class="auth-box-inner">
+                <h2>Secure Login</h2>
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="login-user" placeholder="Enter username" value="admin">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="login-pass" placeholder="••••••••" value="password">
+                </div>
+                <button class="primary-btn" onclick="handleLogin()">Sign In to Dashboard</button>
+                <div class="auth-links">
+                    <span>Forgot password?</span>
+                    <span>IT Support</span>
+                </div>
+            </div>
         </div>
     </div>
 

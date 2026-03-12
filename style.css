@@ -1121,6 +1121,17 @@ body.rtl .modal-footer { flex-direction: row-reverse; }
 }
 .invoice-file-link:hover { background: rgba(243,156,18,.2); }
 
+/* Toast Notification */
+.toast {
+    position: fixed; bottom: 30px; right: 30px;
+    background: #2ecc71; color: #fff;
+    padding: 12px 25px; border-radius: 10px;
+    z-index: 99999; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    font-weight: 500; display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+.toast.active { display: block; }
+
 /* Status badge extras */
 .status-badge.received  { background: rgba(52,152,219,.15); color: #3498db; border-color: #3498db44; }
 .status-badge.danger    { background: rgba(231,76,60,.15);  color: #e74c3c; border-color: #e74c3c44; }
